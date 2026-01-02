@@ -10,7 +10,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
     }
 
     .card {
@@ -20,6 +20,7 @@
       border-radius: 12px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.25);
       text-align: center;
+      animation: fadeIn 1s ease;
     }
 
     h1 {
@@ -65,6 +66,7 @@
       border-radius: 8px;
       cursor: pointer;
       margin-top: 10px;
+      transition: 0.3s;
     }
 
     button:hover {
@@ -75,6 +77,11 @@
       font-size: 12px;
       color: #777;
       margin-top: 15px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
@@ -109,15 +116,24 @@
 
 <script>
 function startTest() {
-  if (name.value === "" || roll.value === "") {
+  const nameInput = document.getElementById("name");
+  const rollInput = document.getElementById("roll");
+
+  if (nameInput.value.trim() === "" || rollInput.value.trim() === "") {
     alert("Please enter Name and Roll Number");
     return;
   }
-  localStorage.setItem("studentName", name.value);
-  localStorage.setItem("rollNo", roll.value);
+
+  localStorage.setItem("studentName", nameInput.value.trim());
+  localStorage.setItem("rollNo", rollInput.value.trim());
+
   window.location.href = "test.html";
 }
 </script>
 
 </body>
 </html>
+
+   
+ 
+ 
