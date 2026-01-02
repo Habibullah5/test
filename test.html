@@ -1,142 +1,267 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>ETEA Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETEA 100/100 Practice Test</title>
   <style>
-    body {
-      font-family: Arial;
-      background: #f2f4f8;
-      padding: 20px;
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f4f7f6; padding:20px; color: #333; }
+    .container { max-width: 1000px; margin: auto; }
+    h2 { text-align:center; color: #2c3e50; }
+    
+    #timer { 
+      font-size:22px; font-weight: bold; color:#fff; text-align:center; 
+      margin-bottom:20px; position: sticky; top: 10px; background: #e74c3c;
+      padding: 10px; border-radius: 8px; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
     .question-box {
-      background: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background:white; padding:15px 25px; margin-bottom:15px;
+      border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.05);
+      border-left: 6px solid #3498db;
     }
 
-    .question {
-      font-weight: bold;
-      margin-bottom: 10px;
+    .q-text { 
+      font-weight: 600; font-size: 17px; margin-bottom: 12px; display: block;
     }
 
-    /* ⭐ OPTIONS IN ONE ROW */
-    .options {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
+    .options-row { 
+      display: flex; gap: 15px; flex-wrap: wrap; align-items: center;
     }
 
-    .option {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #f9f9f9;
+    .option-item {
+      display: flex; align-items: center; cursor: pointer; padding: 8px 12px;
+      border-radius: 20px; border: 1px solid #ddd; background: #fafafa;
+      transition: 0.2s; min-width: 120px;
     }
 
-    .option:hover {
-      background: #e6f0ff;
+    .option-item:hover { background: #ebf5fb; border-color: #3498db; }
+
+    .circle-btn {
+      height: 20px; width: 20px; border: 2px solid #7f8c8d; border-radius: 50%;
+      margin-right: 10px; display: inline-block; position: relative; flex-shrink: 0;
     }
 
-    .circle {
-      height: 16px;
-      width: 16px;
-      border: 2px solid #555;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-
-    .selected {
-      background: #d6e4ff;
-      border-color: #004085;
-    }
-
-    .selected .circle {
-      background: #004085;
-      border-color: #004085;
-    }
+    .selected { background: #3498db !important; color: white !important; border-color: #2980b9 !important; }
+    .selected .circle-btn { border-color: white; background: white; box-shadow: inset 0 0 0 4px #3498db; }
 
     #submitBtn {
-      width: 100%;
-      padding: 15px;
-      font-size: 18px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      width:100%; padding:20px; font-size:22px; background:#27ae60;
+      color:white; border:none; border-radius:10px; cursor:pointer; font-weight: bold;
+      margin-top: 20px; transition: 0.3s;
+    }
+    #submitBtn:hover { background:#219150; transform: translateY(-2px); }
+
+    #result {
+      display:none; text-align:center; margin-top:30px; padding:40px;
+      border-radius:15px; background:white; box-shadow:0 10px 20px rgba(0,0,0,0.1);
+    }
+    .urdu-text { direction: rtl; text-align: right; font-size: 19px; }
+    .urdu-text .options-row { flex-direction: row; }
+    .urdu-text .circle-btn { margin-right: 0; margin-left: 10px; }
+
+    @media (max-width: 600px) {
+      .options-row { flex-direction: column; align-items: flex-start; }
+      .option-item { width: 100%; }
     }
   </style>
 </head>
 <body>
 
-<h2 style="text-align:center;">ETEA Practice Test</h2>
+<div class="container">
+  <h2>ETEA Full Preparation Test (100 Questions)</h2>
+  <div id="timer">Time Left: 60:00</div>
+  <div id="testArea"></div>
+  <button id="submitBtn" onclick="submitTest()">Submit Final Test</button>
 
-<div id="testArea"></div>
-
-<button id="submitBtn" onclick="submitTest()">Submit Test</button>
+  <div id="result">
+    <div id="emoji" style="font-size: 60px;"></div>
+    <h2 id="status"></h2>
+    <p id="scoreText" style="font-size: 28px; font-weight: bold;"></p>
+    <button onclick="location.reload()" style="padding:10px 20px; cursor:pointer; border-radius:5px; border:none; background:#3498db; color:white;">Restart Exam</button>
+  </div>
+</div>
 
 <script>
-let allQuestions = [
-  { q:"Capital of Pakistan?", o:["Lahore","Islamabad","Karachi","Peshawar"], c:1 },
-  { q:"2 + 2 = ?", o:["3","4","5","6"], c:1 },
-  { q:"Founder of Pakistan?", o:["Allama Iqbal","Liaquat Ali","Quaid-e-Azam","Sir Syed"], c:2 },
-  { q:"Largest province?", o:["Punjab","Sindh","KP","Balochistan"], c:3 },
-  { q:"Currency of Pakistan?", o:["Riyal","Taka","Rupee","Dollar"], c:2 }
+const questions = [
+  // SCIENCE (1-30)
+  {q:"Which planet is known as the Red Planet?", o:["Earth","Venus","Mars","Jupiter"], c:2},
+  {q:"The basic unit of life is called:", o:["Tissue","Organ","Cell","System"], c:2},
+  {q:"Electricity flows through:", o:["Plastic","Rubber","Wood","Copper wire"], c:3},
+  {q:"Water is a:", o:["Element","Compound","Mixture","Metal"], c:1},
+  {q:"Digestion starts in the:", o:["Stomach","Mouth","Intestine","Liver"], c:1},
+  {q:"Matter is made up of tiny:", o:["Stones","Drops","Particles","Pieces"], c:2},
+  {q:"A balanced diet contains:", o:["Only carbs","Only proteins","All nutrients","Only fats"], c:2},
+  {q:"A magnet has how many poles?", o:["One","Two","Three","Four"], c:1},
+  {q:"The ability to do work is called:", o:["Power","Energy","Force","Speed"], c:1},
+  {q:"Which organism is made of only one cell?", o:["Human","Dog","Amoeba","Tree"], c:2},
+  {q:"Which device is used for communication?", o:["Fridge","Washer","Mobile phone","Fan"], c:2},
+  {q:"The part of the cell that controls all activities is:", o:["Cytoplasm","Nucleus","Cell wall","Vacuole"], c:1},
+  {q:"Milk is rich in:", o:["Iron","Calcium","Vitamin C","Fiber"], c:1},
+  {q:"Which of the following is an element?", o:["Water","Sugar","Oxygen","Salt"], c:2},
+  {q:"Which state of matter has a fixed shape?", o:["Gas","Liquid","Solid","Plasma"], c:2},
+  {q:"Which plant grows from spores?", o:["Rose","Fern","Mango","Wheat"], c:1},
+  {q:"Which object produces electricity?", o:["Fan","Cell","Bulb","Switch"], c:1},
+  {q:"The Sun is a:", o:["Planet","Star","Satellite","Asteroid"], c:1},
+  {q:"Which nutrient gives us energy?", o:["Vitamins","Minerals","Carbs","Water"], c:2},
+  {q:"An element is made of:", o:["Mixed atoms","Same atoms","Molecules only","Mixtures"], c:1},
+  {q:"The device used to open or close an electric circuit is:", o:["Bulb","Battery","Switch","Wire"], c:2},
+  {q:"Like poles of magnets:", o:["Attract","Repel","Stick together","Break"], c:1},
+  {q:"The largest gland in the human body is:", o:["Pancreas","Stomach","Liver","Kidney"], c:2},
+  {q:"Air is an example of:", o:["Solid","Liquid","Gas","Metal"], c:2},
+  {q:"Reproduction means:", o:["Growth","Making food","New plants","Respiration"], c:2},
+  {q:"Energy stored in food is:", o:["Heat","Chemical","Light","Sound"], c:1},
+  {q:"Which organ helps in chewing food?", o:["Tongue","Teeth","Stomach","Esophagus"], c:1},
+  {q:"Which is a renewable source of energy?", o:["Coal","Petrol","Natural Gas","Solar Energy"], c:3},
+  {q:"Technology makes our life:", o:["Difficult","Slow","Easier","Useless"], c:2},
+  {q:"Which part of the plant makes seeds?", o:["Root","Stem","Leaf","Flower"], c:3},
+
+  // MATH (31-60)
+  {q:"The HCF of 24, 36 and 60 is:", o:["6","12","18","24"], c:1},
+  {q:"The LCM of 6 and 15 is:", o:["15","20","30","90"], c:2},
+  {q:"Which number is divisible by both 3 and 5?", o:["45","14","25","21"], c:0},
+  {q:"(–12) + 7 – (–5) =", o:["–10","0","–20","10"], c:1},
+  {q:"The value of (–8) × 3 + 4 is:", o:["–28","–20","–12","20"], c:1},
+  {q:"Ratio red to blue is 4:7. Total 55. Blue balls?", o:["20","25","30","35"], c:3},
+  {q:"Shirt costs 800. Discount 15%. Discount amount?", o:["100","110","120","150"], c:2},
+  {q:"Which is a subset of {1, 2, 3, 4}?", o:["{2, 5}","{1, 3}","{6}","{5, 6}"], c:1},
+  {q:"A = {even numbers less than 10}:", o:["{1,3,5..}","{2,4,6,8}","{0,1..}","{2,3,5..}"], c:1},
+  {q:"Pattern: 3, 6, 12, 24, ___", o:["36","42","48","60"], c:2},
+  {q:"NOT an algebraic expression:", o:["3x+2","5y-7","x²+1","7+3=10"], c:3},
+  {q:"Simplify: 4x + 3x – 2", o:["7x – 2","7x + 2","x – 2","4x + 1"], c:0},
+  {q:"Solve: 2x – 5 = 11", o:["6","7","8","9"], c:2},
+  {q:"Value of 5a – 3 when a = 4 is:", o:["17","20","13","7"], c:0},
+  {q:"Total surface area of cube side 4 cm:", o:["64","96","48","24"], c:1},
+  {q:"Volume of cuboid 5x4x3:", o:["20","40","60","80"], c:2},
+  {q:"Supplementary of 65°:", o:["115°","125°","135°","145°"], c:0},
+  {q:"Vertically opposite angles are:", o:["Unequal","Comp.","Equal","Acute"], c:2},
+  {q:"Rectangle lines of symmetry:", o:["1","2","3","4"], c:1},
+  {q:"Exactly one line of symmetry:", o:["Square","Rectangle","Iso. Triangle","Circle"], c:2},
+  {q:"To construct 60°, we use:", o:["Ruler","Protractor","Compass+Ruler","Divider"], c:2},
+  {q:"Tool NOT needed for construction:", o:["Compass","Ruler","Protractor","Pencil"], c:2},
+  {q:"The mean of 10, 15, 20, 25 is:", o:["15","17.5","20","25"], c:1},
+  {q:"Data representation best for comparing:", o:["Tally","Bar graph","Picto","Table"], c:1},
+  {q:"The median of 3, 7, 5, 9, 11 is:", o:["5","7","9","11"], c:1},
+  {q:"Which has greatest factors?", o:["12","13","17","19"], c:0},
+  {q:"(–4)² – 3² =", o:["–7","7","16","25"], c:1},
+  {q:"40% of a number is 80, number is:", o:["160","180","200","240"], c:2},
+  {q:"Perimeter of square is 32, side is:", o:["4","6","8","16"], c:2},
+  {q:"Linear equation in one variable:", o:["x²=9","3x+5=0","xy=6","x³-2=0"], c:1},
+
+  // ENGLISH (61-80)
+  {q:"Which of the following is a noun?", o:["Run","Quickly","Happiness","Blue"], c:2},
+  {q:"Identify verb: She writes a letter.", o:["She","Writes","Letter","Every"], c:1},
+  {q:"Which word is an adjective?", o:["Slowly","Teacher","Beautiful","Read"], c:2},
+  {q:"Correct present continuous:", o:["He play","He is play","He is playing","He played"], c:2},
+  {q:"Sentence in past tense:", o:["Singing","Sings","Sang well","Will sing"], c:2},
+  {q:"Correct future tense:", o:["I eat","I am eating","I ate","I will eat"], c:3},
+  {q:"Passive: He wrote a letter.", o:["Is written","Was written","Has written","Had written"], c:1},
+  {q:"Active voice sentence:", o:["Done by Ali","Kicked by him","Ali did work","Broken"], c:2},
+  {q:"A simile comparison using:", o:["As or like","Only as","Only like","Than"], c:0},
+  {q:"'As brave as a lion' is:", o:["Metaphor","Pers.","Simile","Hyperbole"], c:2},
+  {q:"'Time is a thief' is:", o:["Simile","Metaphor","Pers.","Irony"], c:1},
+  {q:"'The wind whispered' is:", o:["Metaphor","Simile","Pers.","Allit."], c:2},
+  {q:"Which is a pronoun?", o:["Ali","School","He","Book"], c:2},
+  {q:"___ honest man:", o:["A","An","The","No article"], c:1},
+  {q:"Which sentence is correct?", o:["Don't like","Doesn't likes","Doesn't like tea","Not likes"], c:2},
+  {q:"Identify preposition: Cat is under table.", o:["Cat","Is","Under","Table"], c:2},
+  {q:"Correct punctuation:", o:["Name.","Name?","name?","Name!"], c:1},
+  {q:"Conjunction: He was tired ___ he worked.", o:["Because","Or","But","So"], c:2},
+  {q:"Imperative sentence:", o:["He is going","Ready?","Please open door","What a day!"], c:2},
+  {q:"Which word is an adverb?", o:["Honest","Quickly","Child","Kind"], c:1},
+
+  // URDU (81-90)
+  {q:"اسم کی درست تعریف کیا ہے؟", o:["کام","کیفیت","نام","زمانہ"], c:2, isUrdu: true},
+  {q:"درج ذیل میں کون سا فعل ہے؟", o:["خوبصورت","کتاب","لکھنا","میز"], c:2, isUrdu: true},
+  {q:"'لڑکا اسکول جاتا ہے' میں 'جاتا ہے' کیا ہے؟", o:["اسم","صفت","فعل","حرف"], c:2, isUrdu: true},
+  {q:"اسم کی خوبی بیان کرنے والا لفظ:", o:["فعل","صفت","ضمیر","حرف"], c:1, isUrdu: true},
+  {q:"'وہ' کس قسم کا لفظ ہے؟", o:["اسم","فعل","ضمیر","صفت"], c:2, isUrdu: true},
+  {q:"'میں، ہم، تم' کیا کہلاتے ہیں؟", o:["اسم","فعل","ضمیر","حرف"], c:2, isUrdu: true},
+  {q:"'کتاب میز پر ہے' میں 'پر' کیا ہے؟", o:["اسم","حرف","فعل","صفت"], c:1, isUrdu: true},
+  {q:"واحد 'لڑکا' کی جمع:", o:["لڑکی","لڑکے","لڑکیاں","لڑکیوں"], c:1, isUrdu: true},
+  {q:"'محنتی طالب علم' میں 'محنتی' کیا ہے؟", o:["اسم","فعل","صفت","ضمیر"], c:2, isUrdu: true},
+  {q:"سوال والا جملہ کہلاتا ہے:", o:["خبریہ","تعجبیہ","سوالیہ","امریہ"], c:2, isUrdu: true},
+
+  // ISLAMIYAT (91-100)
+  {q:"سب سے پہلے نبی کون تھے؟", o:["حضرت نوحؑ","حضرت آدمؑ","حضرت ابراہیمؑ","حضرت محمد ﷺ"], c:1, isUrdu: true},
+  {q:"خاتم النبیین کون ہیں؟", o:["حضرت عیسیٰؑ","حضرت موسیٰؑ","حضرت محمد ﷺ","حضرت نوحؑ"], c:2, isUrdu: true},
+  {q:"عقیدہ ختمِ نبوت کا مطلب:", o:["نبی بہت آئے","سلسلہ جاری ہے","محمد ﷺ آخری ہیں","ایک نبی"], c:2, isUrdu: true},
+  {q:"امہات المومنین کون ہیں؟", o:["صحابیات","بیٹیاں","نبی ﷺ کی ازواج","مائیں"], c:2, isUrdu: true},
+  {q:"سب سے پہلی ام المومنین:", o:["حضرت عائشہؓ","حضرت حفصہؓ","حضرت خدیجہؓ","حضرت زینبؓ"], c:2, isUrdu: true},
+  {q:"سب سے پہلا غزوہ کون سا تھا؟", o:["احد","خندق","بدر","تبوک"], c:2, isUrdu: true},
+  {q:"غزوۂ بدر کس ہجری میں ہوا؟", o:["1","2","3","5"], c:1, isUrdu: true},
+  {q:"صحابۂ کرام کون ہوتے ہیں؟", o:["بچے","دیکھنے والے مسلم","تابعین","فرشتے"], c:1, isUrdu: true},
+  {q:"حضرت محمد ﷺ کا قبیلہ:", o:["انصار","بنو امیہ","بنو ہاشم","قریش"], c:2, isUrdu: true},
+  {q:"قرآن مجید کس نبی پر نازل ہوا؟", o:["موسیٰؑ","عیسیٰؑ","محمد ﷺ","ابراہیمؑ"], c:2, isUrdu: true}
 ];
 
-// Random 10
-allQuestions.sort(() => 0.5 - Math.random());
-let questions = allQuestions.slice(0, 10);
-
 let answers = new Array(questions.length).fill(null);
-const testArea = document.getElementById("testArea");
+let time = 3600;
 
-questions.forEach((q, qi) => {
-  let box = document.createElement("div");
-  box.className = "question-box";
-
-  let html = `<div class="question">Q${qi+1}. ${q.q}</div><div class="options">`;
-
-  q.o.forEach((opt, oi) => {
-    html += `
-      <div class="option" id="q${qi}o${oi}" onclick="selectAnswer(${qi},${oi})">
-        <div class="circle"></div>${opt}
+function init() {
+  const area = document.getElementById("testArea");
+  questions.forEach((q, i) => {
+    const box = document.createElement("div");
+    box.className = "question-box" + (q.isUrdu ? " urdu-text" : "");
+    box.innerHTML = `
+      <span class="q-text">${i+1}. ${q.q}</span>
+      <div class="options-row">
+        ${q.o.map((opt, oi) => `
+          <div class="option-item" onclick="select(${i}, ${oi}, this)">
+            <span class="circle-btn"></span>
+            <span>${opt}</span>
+          </div>
+        `).join('')}
       </div>
     `;
+    area.appendChild(box);
   });
+  startTimer();
+}
 
-  html += `</div>`;
-  box.innerHTML = html;
-  testArea.appendChild(box);
-});
-
-function selectAnswer(qi, oi) {
+function select(qi, oi, el) {
   answers[qi] = oi;
+  const parent = el.parentElement;
+  Array.from(parent.children).forEach(child => child.classList.remove("selected"));
+  el.classList.add("selected");
+}
 
-  questions[qi].o.forEach((_, i) => {
-    document.getElementById(`q${qi}o${i}`).classList.remove("selected");
-  });
-
-  document.getElementById(`q${qi}o${oi}`).classList.add("selected");
+function startTimer() {
+  const timerEl = document.getElementById("timer");
+  const interval = setInterval(() => {
+    let m = Math.floor(time / 60);
+    let s = time % 60;
+    timerEl.innerText = `Time Left: ${m}:${s < 10 ? '0' : ''}${s}`;
+    if (time-- <= 0) {
+      clearInterval(interval);
+      submitTest();
+    }
+  }, 1000);
 }
 
 function submitTest() {
   let score = 0;
-  answers.forEach((ans, i) => {
-    if (ans === questions[i].c) score++;
-  });
-
-  localStorage.setItem("score", score);
-  localStorage.setItem("total", questions.length);
-  window.location.href = "result.html";
+  questions.forEach((q, i) => { if (answers[i] === q.c) score++; });
+  
+  document.getElementById("testArea").style.display = "none";
+  document.getElementById("submitBtn").style.display = "none";
+  document.getElementById("timer").style.display = "none";
+  
+  const res = document.getElementById("result");
+  res.style.display = "block";
+  document.getElementById("scoreText").innerText = `Total Score: ${score} / 100`;
+  
+  if(score >= 50) {
+    document.getElementById("status").innerText = "Congratulations! You Passed!";
+    document.getElementById("emoji").innerText = "🏆";
+  } else {
+    document.getElementById("status").innerText = "Keep Studying and Try Again!";
+    document.getElementById("emoji").innerText = "📚";
+  }
+  window.scrollTo(0, 0);
 }
-</script>
 
+init();
+</script>
 </body>
 </html>
