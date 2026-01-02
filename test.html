@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ETEA Test</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f4f8;
+      padding: 20px;
+    }
+
+    .question-box {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .question {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* ⭐ OPTIONS IN ONE ROW */
+    .options {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+
+    .option:hover {
+      background: #e6f0ff;
+    }
+
+    .circle {
+      height: 16px;
+      width: 16px;
+      border: 2px solid #555;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .selected {
+      background: #d6e4ff;
+      border-color: #004085;
+    }
+
+    .selected .circle {
+      background: #004085;
+      border-color: #004085;
+    }
+
+    #submitBtn {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">ETEA Practice Test</h2>
+
+<div id="testArea"></div>
+
+<button id="submitBtn" onclick="submitTest()">Submit Test</button>
+
+<script>
+let allQuestions = [
+  { q:"Capital of Pakistan?", o:["Lahore","Islamabad","Karachi","Peshawar"], c:1 },
+  { q:"2 + 2 = ?", o:["3","4","5","6"], c:1 },
+  { q:"Founder of Pakistan?", o:["Allama Iqbal","Liaquat Ali","Quaid-e-Azam","Sir Syed"], c:2 },
+  { q:"Largest province?", o:["Punjab","Sindh","KP","Balochistan"], c:3 },
+  { q:"Currency of Pakistan?", o:["Riyal","Taka","Rupee","Dollar"], c:2 }
+];
+
+// Random 10
+allQuestions.sort(() => 0.5 - Math.random());
+let questions = allQuestions.slice(0, 10);
+
+let answers = new Array(questions.length).fill(null);
+const testArea = document.getElementById("testArea");
+
+questions.forEach((q, qi) => {
+  let box = document.createElement("div");
+  box.className = "question-box";
+
+  let html = `<div class="question">Q${qi+1}. ${q.q}</div><div class="options">`;
+
+  q.o.forEach((opt, oi) => {
+    html += `
+      <div class="option" id="q${qi}o${oi}" onclick="selectAnswer(${qi},${oi})">
+        <div class="circle"></div>${opt}
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+  box.innerHTML = html;
+  testArea.appendChild(box);
+});
+
+function selectAnswer(qi, oi) {
+  answers[qi] = oi;
+
+  questions[qi].o.forEach((_, i) => {
+    document.getElementById(`q${qi}o${i}`).classList.remove("selected");
+  });
+
+  document.getElementById(`q${qi}o${oi}`).classList.add("selected");
+}
+
+function submitTest() {
+  let score = 0;
+  answers.forEach((ans, i) => {
+    if (ans === questions[i].c) score++;
+  });
+
+  localStorage.setItem("score", score);
+  localStorage.setItem("total", questions.length);
+  window.location.href = "result.html";
+}
+</script>
+
+</body>
+</html>

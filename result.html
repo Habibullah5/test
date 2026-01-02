@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Final Result</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f2f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      width: 350px;
+    }
+
+    h1 {
+      color: #28a745;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Final Result</h2>
+
+  <script>
+    const name = localStorage.getItem("studentName") || "Not Provided";
+    const roll = localStorage.getItem("rollNo") || "Not Provided";
+    const score = localStorage.getItem("score");
+    const total = localStorage.getItem("total");
+
+    document.write(`
+      <p><b>Name:</b> ${name}</p>
+      <p><b>Roll No:</b> ${roll}</p>
+      <h1>${score} / ${total}</h1>
+    `);
+  </script>
+</div>
+
+</body>
+</html>
