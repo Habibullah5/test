@@ -4,46 +4,57 @@
   <title>Final Result</title>
   <style>
     body {
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       background: #f2f4f8;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
-
     .card {
       background: white;
-      padding: 30px;
+      padding: 40px;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       width: 350px;
     }
-
-    h1 {
-      color: #28a745;
+    h1 { color: #28a745; font-size: 3rem; margin: 10px 0; }
+    p { font-size: 1.1rem; color: #555; margin: 5px 0; }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #1d2671;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
 
 <div class="card">
-  <h2>Final Result</h2>
-
-  <script>
-    const name = localStorage.getItem("studentName") || "Not Provided";
-    const roll = localStorage.getItem("rollNo") || "Not Provided";
-    const score = localStorage.getItem("score");
-    const total = localStorage.getItem("total");
-
-    document.write(`
-      <p><b>Name:</b> ${name}</p>
-      <p><b>Roll No:</b> ${roll}</p>
-      <h1>${score} / ${total}</h1>
-    `);
-  </script>
+  <h2>Test Result</h2>
+  <div id="resultContent"></div>
+  <a href="index.html" class="btn">Take Test Again</a>
 </div>
+
+<script>
+  const name = localStorage.getItem("studentName") || "Not Provided";
+  const roll = localStorage.getItem("rollNo") || "Not Provided";
+  const score = localStorage.getItem("score") || "0";
+  const total = localStorage.getItem("total") || "100";
+
+  document.getElementById("resultContent").innerHTML = `
+    <p><b>Name:</b> ${name}</p>
+    <p><b>Roll No:</b> ${roll}</p>
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+    <p>Your Score:</p>
+    <h1>${score} / ${total}</h1>
+  `;
+</script>
 
 </body>
 </html>

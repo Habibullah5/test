@@ -3,266 +3,402 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ETEA 100/100 Practice Test</title>
+  <title>ETEA Test - Questions</title>
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f4f7f6; padding:20px; color: #333; }
-    .container { max-width: 1000px; margin: auto; }
-    h2 { text-align:center; color: #2c3e50; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .quiz-container {
+      background-color: white;
+      width: 100%;
+      max-width: 650px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+      color: #555;
+      font-weight: bold;
+    }
+    #questionText {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .urdu-text {
+      font-family: 'Jameel Noori Nastaleeq', Arial, sans-serif;
+      direction: rtl;
+      text-align: right;
+      font-size: 1.4rem !important;
+    }
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
     
-    #timer { 
-      font-size:22px; font-weight: bold; color:#fff; text-align:center; 
-      margin-bottom:20px; position: sticky; top: 10px; background: #e74c3c;
-      padding: 10px; border-radius: 8px; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    /* Option Styles */
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .option-label:hover { 
+      background-color: #f0f8ff; 
+      border-color: #007bff; 
+    }
+    .option-label input { 
+      margin-right: 15px; 
+      transform: scale(1.2); 
     }
 
-    .question-box {
-      background:white; padding:15px 25px; margin-bottom:15px;
-      border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.05);
-      border-left: 6px solid #3498db;
+    /* Feedback Styles */
+    .correct {
+      background-color: #d4edda !important;
+      border-color: #28a745 !important;
+      color: #155724;
+    }
+    .wrong {
+      background-color: #f8d7da !important;
+      border-color: #dc3545 !important;
+      color: #721c24;
+    }
+    /* Disable clicking after selection */
+    .disabled {
+      pointer-events: none;
+      opacity: 0.9;
     }
 
-    .q-text { 
-      font-weight: 600; font-size: 17px; margin-bottom: 12px; display: block;
+    /* Urdu layout adjustments */
+    .urdu-text .option-label { flex-direction: row-reverse; }
+    .urdu-text .option-label input { margin-right: 0; margin-left: 15px; }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
     }
-
-    .options-row { 
-      display: flex; gap: 15px; flex-wrap: wrap; align-items: center;
+    button {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
     }
-
-    .option-item {
-      display: flex; align-items: center; cursor: pointer; padding: 8px 12px;
-      border-radius: 20px; border: 1px solid #ddd; background: #fafafa;
-      transition: 0.2s; min-width: 120px;
-    }
-
-    .option-item:hover { background: #ebf5fb; border-color: #3498db; }
-
-    .circle-btn {
-      height: 20px; width: 20px; border: 2px solid #7f8c8d; border-radius: 50%;
-      margin-right: 10px; display: inline-block; position: relative; flex-shrink: 0;
-    }
-
-    .selected { background: #3498db !important; color: white !important; border-color: #2980b9 !important; }
-    .selected .circle-btn { border-color: white; background: white; box-shadow: inset 0 0 0 4px #3498db; }
-
-    #submitBtn {
-      width:100%; padding:20px; font-size:22px; background:#27ae60;
-      color:white; border:none; border-radius:10px; cursor:pointer; font-weight: bold;
-      margin-top: 20px; transition: 0.3s;
-    }
-    #submitBtn:hover { background:#219150; transform: translateY(-2px); }
-
-    #result {
-      display:none; text-align:center; margin-top:30px; padding:40px;
-      border-radius:15px; background:white; box-shadow:0 10px 20px rgba(0,0,0,0.1);
-    }
-    .urdu-text { direction: rtl; text-align: right; font-size: 19px; }
-    .urdu-text .options-row { flex-direction: row; }
-    .urdu-text .circle-btn { margin-right: 0; margin-left: 10px; }
-
-    @media (max-width: 600px) {
-      .options-row { flex-direction: column; align-items: flex-start; }
-      .option-item { width: 100%; }
-    }
+    #prevBtn { background-color: #6c757d; color: white; }
+    #prevBtn:disabled { background-color: #ccc; cursor: not-allowed; }
+    #nextBtn { background-color: #1d2671; color: white; }
+    #nextBtn:hover { background-color: #162055; }
+    .finish-btn { background-color: #28a745 !important; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>ETEA Full Preparation Test (100 Questions)</h2>
-  <div id="timer">Time Left: 60:00</div>
-  <div id="testArea"></div>
-  <button id="submitBtn" onclick="submitTest()">Submit Final Test</button>
+<div class="quiz-container">
+  <div class="header">
+    <span id="studentDisplay">Student</span>
+    <span id="progressText">Question 1 of 100</span>
+  </div>
 
-  <div id="result">
-    <div id="emoji" style="font-size: 60px;"></div>
-    <h2 id="status"></h2>
-    <p id="scoreText" style="font-size: 28px; font-weight: bold;"></p>
-    <button onclick="location.reload()" style="padding:10px 20px; cursor:pointer; border-radius:5px; border:none; background:#3498db; color:white;">Restart Exam</button>
+  <div id="quizContent">
+    <h2 id="questionText">Loading...</h2>
+    <div class="options-container" id="optionsList"></div>
+  </div>
+
+  <div class="footer">
+    <button id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
   </div>
 </div>
 
 <script>
-const questions = [
-  // SCIENCE (1-30)
-  {q:"Matter is anything that has mass and occupies space.", o:["True","False","Only gas","Only solid"], c:0},
-  {q:"The smallest unit of matter that retains its properties is called a:", o:["Cell","Particle","Tissue","Organ"], c:1},
-  {q:"Particles of matter are always in motion.", o:["True","False","Only solids","Never"], c:0},
-  {q:"Which state of matter has particles closely packed?", o:["Gas","Liquid","Solid","Plasma"], c:2},
-  {q:"Particles of gas have:", o:["Very little space","No movement","Large spaces between them","Fixed position"], c:2},
-  {q:"Diffusion happens faster in:", o:["Solids","Liquids","Gases","Metals"], c:2},
-  {q:"Heating a substance causes particles to:", o:["Stop moving","Move faster","Disappear","Shrink"], c:1},
-  {q:"Cooling a substance causes particles to:", o:["Move faster","Move slower","Break","Evaporate"], c:1},
-  {q:"Change of solid into liquid is called:", o:["Freezing","Evaporation","Melting","Condensation"], c:2},
-  {q:"Liquids have:", o:["Fixed shape","Fixed volume only","No volume","No mass"], c:1},
-  {q:"Digestion of food starts in the:", o:["Stomach","Mouth","Small intestine","Large intestine"], c:1},
-  {q:"Teeth help mainly in:", o:["Swallowing","Breathing","Chewing food","Absorption"], c:2},
-  {q:"Saliva helps in digestion of:", o:["Proteins","Fats","Starch","Vitamins"], c:2},
-  {q:"The tube that connects mouth to stomach is called:", o:["Trachea","Intestine","Oesophagus","Rectum"], c:2},
-  {q:"Protein digestion begins in the:", o:["Mouth","Stomach","Small intestine","Large intestine"], c:1},
-  {q:"Gastric juice contains:", o:["Sugar","Acid","Water only","Bile"], c:1},
-  {q:"The liver produces:", o:["Insulin","Saliva","Bile","Acid"], c:2},
-  {q:"Bile helps in digestion of:", o:["Proteins","Starch","Fats","Minerals"], c:2},
-  {q:"Most nutrients are absorbed in the:", o:["Stomach","Large intestine","Small intestine","Rectum"], c:2},
-  {q:"Finger-like projections in the small intestine are called:", o:["Alveoli","Villi","Nephrons","Cells"], c:1},
-  {q:"Villi increase the surface area for:", o:["Digestion","Chewing","Absorption","Breathing"], c:2},
-  {q:"Large intestine mainly absorbs:", o:["Nutrients","Proteins","Water","Oxygen"], c:2},
-  {q:"Movement of food through digestive tract is called:", o:["Respiration","Circulation","Peristalsis","Excretion"], c:2},
-  {q:"Pancreas produces:", o:["Bile","Digestive enzymes","Saliva","Acid"], c:1},
-  {q:"Undigested food is removed through the:", o:["Mouth","Stomach","Anus","Small intestine"], c:2},
-  {q:"Digestive enzymes are mostly:", o:["Fats","Carbohydrates","Proteins","Minerals"], c:2},
-  {q:"Rectum temporarily stores:", o:["Food","Water","Waste","Nutrients"], c:2},
-  {q:"Which organ is NOT part of digestive system?", o:["Liver","Heart","Stomach","Intestine"], c:1},
-  {q:"Proper digestion helps the body to:", o:["Grow and repair","Sleep","Breathe","Think"], c:0},
-  {q:"Digestion means breaking complex food into:", o:["Bigger particles","Simpler substances","Waste","Energy directly"], c:1},
+  const storedName = localStorage.getItem("studentName");
+  if(storedName) document.getElementById("studentDisplay").innerText = storedName;
 
-  // MATH (31-60)
-  {q:"A well-defined collection of objects is called a:", o:["Number","Set","Pattern","Variable"], c:1},
-  {q:"Which of the following is a set?", o:["Beautiful flowers","Tall students","Vowels in English alphabet","Good books"], c:2},
-  {q:"The symbol used to show a set is:", o:["( )","[ ]","{ }","< >"], c:2},
-  {q:"The empty set is denoted by:", o:["{0}","{ }","{1}","{a}"], c:1},
-  {q:"A set containing only one element is called:", o:["Empty set","Universal set","Singleton set","Finite set"], c:2},
-  {q:"If A = {1, 2, 3} and 2 ∈ A, it means:", o:["2 is not in A","2 is an element of A","A equals 2","A has two elements"], c:1},
-  {q:"If B = {a, b, c}, which is a subset of B?", o:["{a, d}","{b, c}","{d}","{a, e}"], c:1},
-  {q:"The union of two sets contains:", o:["Common elements only","Elements of first set only","All elements of both sets","No elements"], c:2},
-  {q:"The intersection of two sets contains:", o:["All elements","Different elements","Common elements","No elements"], c:2},
-  {q:"If A = {1, 2} and B = {3, 4}, then A ∩ B =", o:["{1, 2, 3, 4}","{ }","{2, 3}","{1}"], c:1},
-  {q:"A letter used to represent a number is called a:", o:["Constant","Variable","Term","Factor"], c:1},
-  {q:"Which of the following is an algebraic expression?", o:["5 + 3 = 8","x + 5","12 ÷ 4","7"], c:1},
-  {q:"In the expression 3x, the number 3 is called the:", o:["Variable","Constant","Coefficient","Term"], c:2},
-  {q:"The expression 4 + y has how many terms?", o:["One","Two","Three","Four"], c:1},
-  {q:"A constant has:", o:["No value","Changing value","Fixed value","Alphabet only"], c:2},
-  {q:"Like terms have:", o:["Different variables","Same variables and powers","Only numbers","Different signs"], c:1},
-  {q:"Which are like terms?", o:["2x and 3y","5a and 7a","x and x²","3 and x"], c:1},
-  {q:"The value of 2x when x = 3 is:", o:["5","6","9","12"], c:1},
-  {q:"Which is a numerical expression?", o:["x + 4","y − 2","7 × 5","a + b"], c:2},
-  {q:"The expression 5x − 2 has:", o:["One term","Two terms","Three terms","No term"], c:1},
-  {q:"A pattern is a:", o:["Random arrangement","Repeated design or sequence","Single number","Formula only"], c:1},
-  {q:"Which is a number pattern?", o:["Circle, square, circle","Red, blue, red","2, 4, 6, 8","Cat, dog, cat"], c:2},
-  {q:"The rule of the pattern 3, 6, 9, 12 is:", o:["Subtract 3","Add 2","Add 3","Multiply by 3"], c:2},
-  {q:"The next number in the pattern 5, 10, 15, ___ is:", o:["18","20","25","30"], c:1},
-  {q:"The pattern 1, 4, 9, 16 is based on:", o:["Adding 3","Odd numbers","Square numbers","Even numbers"], c:2},
-  {q:"The missing term in the pattern 2, 4, __, 8 is:", o:["5","6","7","10"], c:1},
-  {q:"A repeating pattern is one that:", o:["Stops early","Never changes","Repeats again and again","Has no rule"], c:2},
-  {q:"Which is a shape pattern?", o:["1, 2, 3","a, b, c","△ ○ △ ○","5, 10, 15"], c:2},
-  {q:"Patterns help us to:", o:["Guess randomly","Find rules and predict","Memorize numbers only","Draw pictures"], c:1},
-  {q:"The next term in the pattern 10, 20, 30, ___ is:", o:["35","40","50","60"], c:1},
+  // --- DATABASE OF NEW QUESTIONS (1-100) ---
+  const questions = [
+    // English & General Knowledge (1-25)
+    { q: "Which part of speech shows the action in a sentence?", options: ["Noun", "Verb", "Adjective", "Pronoun"], a: 1 },
+    { q: "A word used to describe a noun is called:", options: ["Verb", "Adverb", "Adjective", "Preposition"], a: 2 },
+    { q: "Abdul Sattar Edhi was famous for his:", options: ["Political career", "Wealth", "Social welfare services", "Army service"], a: 2 },
+    { q: "Edhi believed in helping people without:", options: ["Reward", "Education", "Permission", "Effort"], a: 0 },
+    { q: "Mother Teresa devoted her life to serving:", options: ["Rich people", "Soldiers", "Poor and sick people", "Teachers"], a: 2 },
+    { q: "Mother Teresa worked mainly in:", options: ["Pakistan", "India", "England", "America"], a: 1 },
+    { q: "Helen Keller lost her sight and hearing at the age of:", options: ["One year", "Two years", "Three years", "Four years"], a: 1 },
+    { q: "Who helped Helen Keller learn to communicate?", options: ["Her mother", "Her sister", "Anne Sullivan", "Her teacher at school"], a: 2 },
+    { q: "“An Island Adventure” is about:", options: ["A city life", "A jungle safari", "Survival on an island", "A school trip"], a: 2 },
+    { q: "The main theme of “An Island Adventure” is:", options: ["Fear", "Friendship", "Courage and teamwork", "Wealth"], a: 2 },
+    { q: "Shandur Polo Tournament is played between:", options: ["Pakistan and India", "Gilgit and Skardu", "Chitral and Gilgit", "Hunza and Swat"], a: 2 },
+    { q: "Shandur Polo Ground is known as:", options: ["Highest airport", "Highest desert", "Highest polo ground", "Highest lake"], a: 2 },
+    { q: "Mohtarma Fatima Jinnah was the sister of:", options: ["Liaquat Ali Khan", "Allama Iqbal", "Quaid-e-Azam", "Sir Syed Ahmad Khan"], a: 2 },
+    { q: "Fatima Jinnah is also known as:", options: ["Mother of Nation", "Daughter of Nation", "Lady of Nation", "Sister of Nation"], a: 0 },
+    { q: "Pakistan has the world’s second highest mountain:", options: ["Mount Everest", "Nanga Parbat", "K2", "Tirich Mir"], a: 2 },
+    { q: "Which is the national animal of Pakistan?", options: ["Tiger", "Markhor", "Lion", "Deer"], a: 1 },
+    { q: "“The Sun Is Laughing” is an example of:", options: ["Simile", "Metaphor", "Personification", "Alliteration"], a: 2 },
+    { q: "Giving human qualities to non-living things is called:", options: ["Metaphor", "Personification", "Simile", "Hyperbole"], a: 1 },
+    { q: "The poem “Work” teaches us:", options: ["Laziness", "Pride", "Importance of hard work", "Anger"], a: 2 },
+    { q: "Work done honestly brings:", options: ["Failure", "Punishment", "Respect", "Fear"], a: 2 },
+    { q: "The eagle is known for its:", options: ["Weakness", "Laziness", "Sharp eyesight", "Fear"], a: 2 },
+    { q: "The lesson “Eagle” teaches us to be:", options: ["Careless", "Brave and focused", "Angry", "Silent"], a: 1 },
+    { q: "Galileo is known as:", options: ["Father of Chemistry", "Father of Biology", "Father of Modern Science", "Father of Mathematics"], a: 2 },
+    { q: "Galileo supported the idea that:", options: ["Earth is flat", "Sun moves around Earth", "Earth moves around the Sun", "Stars don’t move"], a: 2 },
+    { q: "A sentence that asks a question is called:", options: ["Assertive", "Imperative", "Interrogative", "Exclamatory"], a: 2 },
 
-  // ENGLISH VOCAB & GRAMMAR (61-80)
-  {q:"Words that sound the same but have different meanings are called:", o:["Synonyms","Antonyms","Homophones","Homographs"], c:2},
-  {q:"Which pair is an example of homophones?", o:["Big – Large","See – Sea","Book – Pen","Run – Walk"], c:1},
-  {q:"Which word means a place to sit and also means to rely on?", o:["Fair","Bank","Bat","Bench"], c:1},
-  {q:"Words that have same spelling but different meanings are called:", o:["Homophones","Homographs","Prefixes","Suffixes"], c:1},
-  {q:"Which is a homograph?", o:["Right (correct / direction)","Son – Sun","Write – Right","Blue – Sky"], c:0},
-  {q:"“Can” is a modal verb that shows:", o:["Past","Ability","Time","Place"], c:1},
-  {q:"Which sentence shows permission?", o:["I can swim.","You may go out.","She will come.","He was reading."], c:1},
-  {q:"“Must” shows:", o:["Ability","Possibility","Obligation","Past habit"], c:2},
-  {q:"Which modal verb shows advice?", o:["Can","Must","Should","Will"], c:2},
-  {q:"“He ___ finish his work today.” (strong necessity)", o:["can","may","must","could"], c:2},
-  {q:"“She is writing a letter” is in:", o:["Simple present","Present continuous","Past continuous","Present perfect"], c:1},
-  {q:"“They have completed the task” is:", o:["Past tense","Present perfect tense","Future tense","Past perfect tense"], c:1},
-  {q:"“He was playing cricket” shows:", o:["Habit","Future plan","Past continuous","Present perfect"], c:2},
-  {q:"Which sentence is in simple past tense?", o:["He eats food.","He is eating food.","He ate food.","He has eaten food."], c:2},
-  {q:"“I will go to school tomorrow” is:", o:["Present","Past","Future","Perfect"], c:2},
-  {q:"Which preposition shows place?", o:["At","In","On","All of these"], c:3},
-  {q:"“The book is ___ the table.”", o:["in","at","on","by"], c:2},
-  {q:"“She lives ___ Lahore.”", o:["on","in","at","by"], c:1},
-  {q:"“He arrived ___ 9 o’clock.”", o:["in","on","at","from"], c:2},
-  {q:"Which preposition is used for movement?", o:["Under","Over","Into","On"], c:2},
+    // Math & Data Handling (26-56)
+    { q: "A graph used to show numerical data using bars is called:", options: ["Pie graph", "Line graph", "Bar graph", "Pictograph"], a: 2 },
+    { q: "In a bar graph, the height of a bar represents:", options: ["Shape of data", "Frequency of data", "Color of data", "Type of data"], a: 1 },
+    { q: "A multiple bar graph is used to:", options: ["Show one set of data", "Compare two or more sets of data", "Show pictures", "Show fractions only"], a: 1 },
+    { q: "Which graph is best to compare boys’ and girls’ attendance?", options: ["Pie graph", "Line graph", "Multiple bar graph", "Pictograph"], a: 2 },
+    { q: "The horizontal line in a graph is called:", options: ["Y-axis", "Origin", "Vertical axis", "X-axis"], a: 3 },
+    { q: "The vertical line in a graph is called:", options: ["X-axis", "Y-axis", "Origin", "Scale"], a: 1 },
+    { q: "The point where X-axis and Y-axis meet is called:", options: ["Scale", "Origin", "Coordinate", "Bar"], a: 1 },
+    { q: "To read a multiple bar graph, we mainly compare:", options: ["Width of bars", "Height of bars", "Color of bars", "Position of bars"], a: 1 },
+    { q: "A pie graph is used to show:", options: ["Increase in data", "Comparison of two values", "Parts of a whole", "Random data"], a: 2 },
+    { q: "A pie graph is also called:", options: ["Line graph", "Circle graph", "Bar graph", "Histogram"], a: 1 },
+    { q: "How many degrees are there in a complete circle?", options: ["90°", "180°", "270°", "360°"], a: 3 },
+    { q: "While constructing a pie graph, the total data value represents:", options: ["Half circle", "One bar", "Full circle", "One sector"], a: 2 },
+    { q: "The first step in handling data is:", options: ["Graph making", "Interpretation", "Data collection", "Conclusion"], a: 2 },
+    { q: "Data collected by counting is called:", options: ["Continuous data", "Grouped data", "Discrete data", "Random data"], a: 2 },
+    { q: "Data that can take any value is called:", options: ["Discrete data", "Continuous data", "Raw data", "Ungrouped data"], a: 1 },
+    { q: "Arithmetic mean is also known as:", options: ["Mode", "Median", "Average", "Middle value"], a: 2 },
+    { q: "The arithmetic mean of 2, 4, 6 is:", options: ["3", "4", "5", "6"], a: 1 },
+    { q: "Median is the value which lies:", options: ["At the start", "At the end", "In the middle", "Most frequent"], a: 2 },
+    { q: "Find the median of 3, 7, 5:", options: ["3", "5", "7", "6"], a: 1 },
+    { q: "Mode is the value that:", options: ["Is smallest", "Is largest", "Occurs most often", "Comes in middle"], a: 2 },
+    { q: "The mode of 2, 4, 4, 6 is:", options: ["2", "4", "6", "8"], a: 1 },
+    { q: "An experiment is an activity:", options: ["With fixed result", "With no result", "With uncertain result", "With sure result"], a: 2 },
+    { q: "A random experiment is one which:", options: ["Always gives same result", "Has more than one possible outcome", "Has no outcome", "Has one outcome"], a: 1 },
+    { q: "The result of an experiment is called:", options: ["Event", "Sample space", "Outcome", "Trial"], a: 2 },
+    { q: "Tossing a coin is an example of:", options: ["Sure event", "Impossible event", "Random experiment", "Fixed event"], a: 2 },
+    { q: "Possible results of an experiment are called:", options: ["Events", "Outcomes", "Trials", "Means"], a: 1 },
+    { q: "The sample space is the:", options: ["One result", "Group of events", "Set of all possible outcomes", "One event"], a: 2 },
+    { q: "The sample space of tossing a coin is:", options: ["{H}", "{T}", "{H, T}", "{H, H}"], a: 2 },
+    { q: "An event is:", options: ["All outcomes", "A single outcome or set of outcomes", "No outcome", "Only one trial"], a: 1 },
+    { q: "Getting a head when tossing a coin is:", options: ["Sample space", "Outcome", "Event", "Experiment"], a: 2 },
+    { q: "Which of the following is an impossible event?", options: ["Getting a tail on coin toss", "Getting a head on coin toss", "Getting number 7 on a dice", "Getting number 3 on a dice"], a: 2 },
 
-  // ENGLISH PHONOLOGY (81-90)
-  {q:"Phonology is the study of:", o:["Meaning of words","Sentence structure","Sounds of language","Spelling"], c:2},
-  {q:"A vowel sound is produced with:", o:["No airflow","Complete blockage","Open mouth","Teeth closed"], c:2},
-  {q:"Which is a vowel sound?", o:["/b/","/t/","/a/","/k/"], c:2},
-  {q:"Diphthongs are:", o:["Single consonant sounds","Two vowel sounds together","Silent letters","Stress patterns"], c:1},
-  {q:"Which is a diphthong sound?", o:["/a/","/e/","/ai/","/b/"], c:2},
-  {q:"The sound /oi/ is found in the word:", o:["Cat","Boy","Bed","Sun"], c:1},
-  {q:"Which word contains a diphthong?", o:["Book","Pen","Time","Sit"], c:2},
-  {q:"Phonemes are:", o:["Letters","Words","Smallest sound units","Sentences"], c:2},
-  {q:"Which word has the /au/ sound?", o:["Cow","Cup","Car","Cut"], c:0},
-  {q:"English has how many main vowel sounds (approximately)?", o:["5","10","20","26"], c:2},
+    // Science (Magnetism) (57-87)
+    { q: "Magnetism is the property by which a magnet:", options: ["Conducts electricity", "Produces heat", "Attracts magnetic materials", "Reflects light"], a: 2 },
+    { q: "Which of the following is a magnetic material?", options: ["Wood", "Plastic", "Iron", "Glass"], a: 2 },
+    { q: "The region around a magnet where its effect can be felt is called:", options: ["Magnetic force", "Magnetic area", "Magnetic field", "Magnetic zone"], a: 2 },
+    { q: "Magnetic field is strongest at the:", options: ["Center of magnet", "Edges of magnet", "Poles of magnet", "Surface of magnet"], a: 2 },
+    { q: "The magnetic field is represented by:", options: ["Dots", "Curved lines", "Straight lines", "Circles only"], a: 1 },
+    { q: "Magnetic field lines always move from:", options: ["South pole to North pole", "North pole to South pole", "Center to poles", "Poles to center"], a: 1 },
+    { q: "Like magnetic poles always:", options: ["Attract each other", "Repel each other", "Cancel each other", "Neutralize each other"], a: 1 },
+    { q: "Unlike magnetic poles:", options: ["Repel each other", "Have no force", "Attract each other", "Destroy each other"], a: 2 },
+    { q: "A bar magnet has:", options: ["One pole", "Two north poles", "Two south poles", "One north and one south pole"], a: 3 },
+    { q: "Breaking a bar magnet into two pieces will produce:", options: ["One magnet and one non-magnet", "Two magnets each with two poles", "One north pole only", "One south pole only"], a: 1 },
+    { q: "Earth behaves like a:", options: ["Electric conductor", "Permanent magnet", "Temporary magnet", "Non-magnetic body"], a: 1 },
+    { q: "The direction of a freely suspended magnet shows:", options: ["East–West direction", "Random direction", "North–South direction", "Circular direction"], a: 2 },
+    { q: "Earth’s magnetic south pole is located near:", options: ["Geographic south pole", "Geographic north pole", "Equator", "Tropic of Cancer"], a: 1 },
+    { q: "A compass needle is used to:", options: ["Measure temperature", "Measure speed", "Detect magnetic field", "Measure electric current"], a: 2 },
+    { q: "Magnetic field around a straight current-carrying conductor is:", options: ["Straight", "Circular", "Elliptical", "Random"], a: 1 },
+    { q: "Increasing electric current in a conductor will:", options: ["Decrease magnetic field", "Remove magnetic field", "Increase magnetic field", "Reverse magnetic field"], a: 2 },
+    { q: "Which of the following produces a magnetic field?", options: ["Stationary charge", "Moving electric charge", "Neutral object", "Insulator only"], a: 1 },
+    { q: "A magnet formed by electric current is called:", options: ["Natural magnet", "Artificial magnet", "Permanent magnet", "Electromagnet"], a: 3 },
+    { q: "Which magnet loses magnetism easily?", options: ["Steel magnet", "Bar magnet", "Temporary magnet", "Permanent magnet"], a: 2 },
+    { q: "An electromagnet is usually made by winding wire around:", options: ["Plastic core", "Wooden core", "Iron core", "Glass core"], a: 2 },
+    { q: "Which factor does NOT affect the strength of an electromagnet?", options: ["Number of turns", "Electric current", "Nature of core", "Color of wire"], a: 3 },
+    { q: "An important application of electromagnet is in:", options: ["Electric bell", "Thermometer", "Barometer", "Microscope"], a: 0 },
+    { q: "Cranes used to lift heavy iron objects use:", options: ["Permanent magnets", "Natural magnets", "Electromagnets", "Weak magnets"], a: 2 },
+    { q: "Loss of magnetism is called:", options: ["Magnetization", "Polarization", "Demagnetization", "Electrification"], a: 2 },
+    { q: "Heating a magnet strongly can cause:", options: ["Strong magnetism", "No change", "Demagnetization", "Electrification"], a: 2 },
+    { q: "Hammering a magnet repeatedly results in:", options: ["Increase in magnetism", "Demagnetization", "Strong poles", "No effect"], a: 1 },
+    { q: "Which method is used to demagnetize a magnet using electricity?", options: ["Passing DC current", "Passing AC current", "Heating method", "Stroking method"], a: 1 },
+    { q: "Demagnetization by electric method uses:", options: ["Battery only", "Alternating current", "Permanent magnet", "Insulated rod"], a: 1 },
+    { q: "Stroking method is used to:", options: ["Demagnetize magnet", "Heat magnet", "Magnetize material", "Break magnet"], a: 2 },
+    { q: "Which statement is TRUE about magnetic field lines?", options: ["They intersect each other", "They start from south pole", "They never intersect", "They are straight always"], a: 2 },
+    { q: "A non-magnetic material is:", options: ["Iron", "Nickel", "Steel", "Copper"], a: 3 },
 
-  // ENGLISH GRAMMAR & SPELLING (91-100)
-  {q:"The teacher ___ in the classroom.", o:["are","were","is","have"], c:2},
-  {q:"The players ___ practicing for the match.", o:["is","was","are","has"], c:2},
-  {q:"Each student ___ a book.", o:["have","has","are","were"], c:1},
-  {q:"She ___ very well.", o:["sing","sings","singing","sung"], c:1},
-  {q:"Which word is spelled correctly?", o:["Enviroment","Definately","Beautiful","Grammer"], c:2},
-  {q:"Find the correctly spelled word.", o:["Recieve","Ocasion","Neccessary","Necessary"], c:3},
-  {q:"Which word is spelled incorrectly?", o:["Friend","School","Knowlege","Teacher"], c:2},
-  {q:"An adverb describes a:", o:["Noun","Pronoun","Verb","Article"], c:2},
-  {q:"“He runs quickly.” The word quickly is a/an:", o:["Adjective","Noun","Verb","Adverb"], c:3},
-  {q:"Which word is an adverb?", o:["Happy","Slowly","Beautiful","Kind"], c:1}
-];
+    // Urdu (88-100)
+    { q: "وہ اسم جو کسی غیر معین شخص، جگہ یا چیز کا نام ہو کہلاتا ہے:", options: ["اسم معرفہ", "اسم ذات", "اسم نکرہ", "اسم صفت"], a: 2 },
+    { q: "اسم نکرہ کی ایک مثال کون سی ہے؟", options: ["پاکستان", "احمد", "ایک لڑکا", "قرآن"], a: 2 },
+    { q: "اسم نکرہ کی اقسام میں شامل ہیں:", options: ["اسم علم اور اسم ذات", "اسم جنس اور اسم نوع", "اسم ظرف اور اسم زمان", "اسم معرفہ اور اسم نکرہ"], a: 0 },
+    { q: "وہ الفاظ جو خوشی، غم، حیرت یا افسوس کا اظہار کریں کہلاتے ہیں:", options: ["حروف جار", "حروف ربط", "حروف فجائیہ", "حروف عطف"], a: 2 },
+    { q: "درج ذیل میں کون سا حرف فجائیہ ہے؟", options: ["اور", "کیونکہ", "آہ!", "میں"], a: 2 },
+    { q: "وہ اسم جو کسی شے کی جنس یا قسم بتائے کہلاتا ہے:", options: ["اسم علم", "اسم ذات", "اسم صفت", "اسم ظرف"], a: 1 },
+    { q: "اسم ذات کی مثال کون سی ہے؟", options: ["خوبصورت", "ایمانداری", "کتاب", "چلنا"], a: 2 },
+    { q: "ضرب المثل سے مراد ہے:", options: ["لمبا جملہ", "شاعری", "تجربے پر مبنی کہاوت", "سوالیہ جملہ"], a: 2 },
+    { q: "درج ذیل میں کون سی ضرب المثل ہے؟", options: ["محنت کرو", "وقت قیمتی ہے", "نیکی کر دریا میں ڈال", "وہ اچھا لڑکا ہے"], a: 2 },
+    { q: "وہ جملہ جس میں ایک ہی خیال ہو کہلاتا ہے:", options: ["مرکب جملہ", "مفرد جملہ", "سوالیہ جملہ", "منفی جملہ"], a: 1 },
+    { q: "وہ جملہ جو دو یا زیادہ جملوں سے مل کر بنے کہلاتا ہے:", options: ["مفرد جملہ", "فعلی جملہ", "مرکب جملہ", "فجائیہ جملہ"], a: 2 },
+    { q: "محاورہ کیا ہوتا ہے؟", options: ["عام جملہ", "لفظی معنی والا فقرہ", "خاص مفہوم رکھنے والا فقرہ", "سوالیہ فقرہ"], a: 2 },
+    { q: "درج ذیل میں کون سا محاورہ ہے؟", options: ["سچ بولنا", "آنکھوں کا تارا", "اچھا طالب علم", "کتاب پڑھنا"], a: 1 }
+  ];
 
-let answers = new Array(questions.length).fill(null);
-let time = 3600;
+  let currentQuestionIndex = 0;
+  const userAnswers = new Array(questions.length).fill(null);
 
-function init() {
-  const area = document.getElementById("testArea");
-  questions.forEach((q, i) => {
-    const box = document.createElement("div");
-    // Removed q.isUrdu check since all new questions are English
-    box.className = "question-box";
-    box.innerHTML = `
-      <span class="q-text">${i+1}. ${q.q}</span>
-      <div class="options-row">
-        ${q.o.map((opt, oi) => `
-          <div class="option-item" onclick="select(${i}, ${oi}, this)">
-            <span class="circle-btn"></span>
-            <span>${opt}</span>
-          </div>
-        `).join('')}
-      </div>
-    `;
-    area.appendChild(box);
-  });
-  startTimer();
-}
+  const questionContainer = document.getElementById("quizContent");
+  const questionText = document.getElementById("questionText");
+  const optionsList = document.getElementById("optionsList");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const progressText = document.getElementById("progressText");
 
-function select(qi, oi, el) {
-  answers[qi] = oi;
-  const parent = el.parentElement;
-  Array.from(parent.children).forEach(child => child.classList.remove("selected"));
-  el.classList.add("selected");
-}
-
-function startTimer() {
-  const timerEl = document.getElementById("timer");
-  const interval = setInterval(() => {
-    let m = Math.floor(time / 60);
-    let s = time % 60;
-    timerEl.innerText = `Time Left: ${m}:${s < 10 ? '0' : ''}${s}`;
-    if (time-- <= 0) {
-      clearInterval(interval);
-      submitTest();
-    }
-  }, 1000);
-}
-
-function submitTest() {
-  let score = 0;
-  questions.forEach((q, i) => { if (answers[i] === q.c) score++; });
-  
-  document.getElementById("testArea").style.display = "none";
-  document.getElementById("submitBtn").style.display = "none";
-  document.getElementById("timer").style.display = "none";
-  
-  const res = document.getElementById("result");
-  res.style.display = "block";
-  document.getElementById("scoreText").innerText = `Total Score: ${score} / 100`;
-  
-  if(score >= 50) {
-    document.getElementById("status").innerText = "Congratulations! You Passed!";
-    document.getElementById("emoji").innerText = "🏆";
-  } else {
-    document.getElementById("status").innerText = "Keep Studying and Try Again!";
-    document.getElementById("emoji").innerText = "📚";
+  // Check for Urdu text to adjust direction
+  function isUrdu(text) {
+    const urduRegex = /[\u0600-\u06FF]/;
+    return urduRegex.test(text);
   }
-  window.scrollTo(0, 0);
-}
 
-init();
+  function renderQuestion() {
+    const q = questions[currentQuestionIndex];
+    const isAnswered = userAnswers[currentQuestionIndex] !== null;
+    
+    questionText.innerText = `${currentQuestionIndex + 1}. ${q.q}`;
+
+    // Toggle Urdu Styling
+    if (isUrdu(q.q)) {
+      questionContainer.classList.add("urdu-text");
+    } else {
+      questionContainer.classList.remove("urdu-text");
+    }
+
+    // Render Options
+    optionsList.innerHTML = "";
+    q.options.forEach((opt, index) => {
+      const label = document.createElement("label");
+      label.className = "option-label";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "option";
+      radio.value = index;
+
+      // Logic to disable or check based on previous answer
+      if (isAnswered) {
+        radio.disabled = true; // Disable radio input
+        label.classList.add("disabled"); // Disable click on label
+        
+        // Restore correct/wrong colors
+        if (index === q.a) {
+          label.classList.add("correct");
+        } else if (index === userAnswers[currentQuestionIndex]) {
+          label.classList.add("wrong");
+        }
+        
+        // Check the radio button they selected
+        if (index === userAnswers[currentQuestionIndex]) {
+          radio.checked = true;
+        }
+      }
+
+      // Add Click Event (only if not answered yet)
+      if (!isAnswered) {
+        label.onclick = function() { checkAnswer(index, q.a, label); };
+      }
+
+      label.appendChild(radio);
+      label.appendChild(document.createTextNode(opt));
+      optionsList.appendChild(label);
+    });
+
+    // Update Progress
+    progressText.innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+
+    // Handle Buttons
+    prevBtn.disabled = currentQuestionIndex === 0;
+
+    if (currentQuestionIndex === questions.length - 1) {
+      nextBtn.innerText = "Finish";
+      nextBtn.classList.add("finish-btn");
+    } else {
+      nextBtn.innerText = "Next";
+      nextBtn.classList.remove("finish-btn");
+    }
+  }
+
+  // New function to handle immediate check
+  function checkAnswer(selectedIndex, correctIndex, clickedLabel) {
+    // Prevent double clicking logic (just in case)
+    if (userAnswers[currentQuestionIndex] !== null) return;
+
+    // Save Answer
+    userAnswers[currentQuestionIndex] = selectedIndex;
+
+    const allLabels = optionsList.getElementsByTagName("label");
+
+    // Loop through all options to apply colors and disable them
+    for (let i = 0; i < allLabels.length; i++) {
+      const lbl = allLabels[i];
+      const radio = lbl.querySelector("input");
+      
+      // Disable interaction
+      lbl.classList.add("disabled");
+      radio.disabled = true;
+
+      // 1. Highlight Correct Answer (Always Green)
+      if (i === correctIndex) {
+        lbl.classList.add("correct");
+      }
+
+      // 2. Highlight Wrong Answer (Red) if user picked it
+      if (i === selectedIndex && selectedIndex !== correctIndex) {
+        lbl.classList.add("wrong");
+      }
+      
+      // Check the radio button visually
+      if (i === selectedIndex) {
+        radio.checked = true;
+      }
+    }
+  }
+
+  function nextQuestion() {
+    if (currentQuestionIndex === questions.length - 1) {
+      finishTest();
+    } else {
+      currentQuestionIndex++;
+      renderQuestion();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      renderQuestion();
+    }
+  }
+
+  function finishTest() {
+    let score = 0;
+    questions.forEach((q, i) => {
+      if (userAnswers[i] === q.a) {
+        score++;
+      }
+    });
+
+    localStorage.setItem("score", score);
+    localStorage.setItem("total", questions.length);
+
+    window.location.href = "result.html";
+  }
+
+  // Start
+  renderQuestion();
 </script>
 </body>
 </html>
