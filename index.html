@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Test</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning-bg: #fffbeb;
+            --warning-border: #fef3c7;
+            --warning-text: #92400e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 650px;
+            padding: 40px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hidden { display: none !important; }
+
+        h2 {
+            color: var(--text-main);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 14px 28px;
+            width: 100%;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f3f4f6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .timer-badge {
+            background: #fee2e2;
+            color: var(--danger);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .question-text {
+            font-size: 19px;
+            color: var(--text-main);
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-card {
+            background: #f9fafb;
+            border: 2px solid #f3f4f6;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .option-card:hover {
+            background: #f0fdf4;
+            border-color: var(--success);
+        }
+
+        .option-card.selected {
+            background: #ecfdf5;
+            border-color: var(--success);
+            font-weight: 600;
+        }
+
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .btn-nav {
+            background: #e5e7eb;
+            color: var(--text-main);
+            padding: 12px 24px;
+            flex: 1;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            background: #d1d5db;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            flex: 1;
+        }
+
+        .btn-submit:hover {
+            background: #059669;
+        }
+
+        .result-layout {
+            text-align: center;
+        }
+        
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #f0fdf4;
+            border: 5px solid var(--success);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .score-num {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        .student-badge-info {
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .alert-banner {
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .instruction-banner {
+            background: var(--warning-bg);
+            border: 2px dashed var(--warning-border);
+            color: var(--warning-text);
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 25px;
+            line-height: 1.4;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen" class="card">
+        <h2>Summer Test</h2>
+        <div class="form-group">
+            <label for="student-name">Student Full Name</label>
+            <input type="text" id="student-name" placeholder="e.g., Muhammad Ali" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="roll-number">Roll Number / Registration ID</label>
+            <input type="text" id="roll-number" placeholder="e.g., SEC-A-45" autocomplete="off">
+        </div>
+        <button class="btn-primary" onclick="startTest()">Start Test</button>
+    </div>
+
+    <div id="test-screen" class="card hidden">
+        <div class="quiz-header">
+            <div class="progress-text">Question <span id="current-idx-text">1</span> of <span id="total-idx-text">51</span></div>
+            <div class="timer-badge" id="timer-display">20:00</div>
+        </div>
+        
+        <div class="question-text" id="question-box"></div>
+        <div class="options-grid" id="options-box"></div>
+
+        <div class="nav-controls">
+            <button class="btn-nav" id="prev-btn" onclick="navigateQuestion(-1)">Previous</button>
+            <button class="btn-nav" id="next-btn" onclick="navigateQuestion(1)">Next</button>
+            <button class="btn-submit hidden" id="submit-btn" onclick="confirmEndTest()">Submit Assessment</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="card hidden">
+        <div class="result-layout">
+            <h2>Assessment Complete</h2>
+            <div id="timeout-banner" class="alert-banner hidden">System auto-submitted evaluation because allocated session time expired.</div>
+            
+            <div class="score-circle">
+                <div class="score-num" id="final-score-val">0</div>
+                <div style="font-size:12px; color:var(--text-muted); font-weight:600;">Correct Answers</div>
+            </div>
+
+            <div class="student-badge-info">
+                <p style="margin-bottom: 6px;"><strong>Student Name:</strong> <span id="lbl-name" style="color:var(--primary); font-weight:600;"></span></p>
+                <p><strong>Roll Identifier:</strong> <span id="lbl-roll" style="color:var(--text-main);"></span></p>
+            </div>
+
+            <div class="instruction-banner">
+                📸 ATTENTION STUDENT:<br>
+                Please take a screenshot of this complete result page right now and send it directly to your teacher.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            // IMAGE 1: REAL & COMPLEX NUMBERS
+            { question: "Simplify: (27x^(-3))^(-1/3) =", options: ["3/x", "x/3", "3x", "1/(3x)"], answer: "x/3" },
+            { question: "Write 7th root of x in exponential form:", options: ["x", "x^7", "x^(1/7)", "x^(7/2)"], answer: "x^(1/7)" },
+            { question: "Write 4^(2/3) with a radical sign:", options: ["³√4²", "³√4", "√4³", "⁶√4"], answer: "³√4²" },
+            { question: "In ³√35, the radicand is:", options: ["3", "1/3", "35", "None of these"], answer: "35" },
+            { question: "Simplify: (25/16)^(-1/2) =", options: ["5/4", "4/5", "-5/4", "-4/5"], answer: "4/5" },
+            { question: "The conjugate of 5 + 4i is:", options: ["-5 + 4i", "-5 - 4i", "5 - 4i", "5 + 4i"], answer: "5 - 4i" },
+            { question: "The value of i^9 is:", options: ["1", "-1", "i", "-i"], answer: "i" },
+            { question: "Every real number is:", options: ["A positive integer", "A rational number", "A negative integer", "A complex number"], answer: "A complex number" },
+            { question: "Real part of 2ab(i + i²) is:", options: ["2ab", "-2ab", "2abi", "-2abi"], answer: "-2ab" },
+            { question: "Imaginary part of -i(3i + 2) is:", options: ["-2", "2", "3", "-3"], answer: "-2" },
+            { question: "Which of the following sets have the closure property w.r.t. addition?", options: ["{0}", "{0, -1}", "{0, 1}", "{1, √2, 1/√2}"], answer: "{0}" },
+            { question: "Name the property of real numbers used in (-√5/2) × 1 = -√5/2:", options: ["Additive identity", "Additive Inverse", "Multiplicative identity", "Multiplicative Inverse"], answer: "Multiplicative identity" },
+            { question: "If x, y, z ∈ R and z < 0, then x < y ⇒", options: ["xz < yz", "xz > yz", "xz = yz", "none of these"], answer: "xz > yz" },
+            { question: "If a, b ∈ R, then only one of a = b or a < b or a > b holds is called:", options: ["Trichotomy property", "Transitive property", "Additive property", "Multiplicative property"], answer: "Trichotomy property" },
+            { question: "A non-terminating, non-recurring decimal represents:", options: ["A natural number", "A rational number", "An irrational number", "A prime number"], answer: "An irrational number" },
+            { question: "The union of the set of rational numbers and irrational numbers is known as set of:", options: ["Rational number", "Irrational", "Real number", "Whole number"], answer: "Real number" },
+            { question: "√5 · √5 is a ________ number.", options: ["Rational", "Irrational", "Real", "None"], answer: "Rational" },
+            { question: "n-th root of ab (ⁿ√(ab)) is equivalent to:", options: ["ⁿ√a · ⁿ√b", "√a · √b", "ⁿ√a · √b", "(d) √a · ⁿ√b"], answer: "ⁿ√a · ⁿ√b" },
+            { question: "⁵√(-8) = ______", options: ["(-8)^(-1/5)", "(-8)^5", "(-8)^(1/5)", "(d) (8)^(1/5)"], answer: "(-8)^(1/5)" },
+            { question: "The value of i^10 is:", options: ["-1", "1", "-i", "i"], answer: "-1" },
+            { question: "The conjugate of 2 + 3i is:", options: ["2 - 3i", "-2 - 3i", "-2 + 3i", "2 + 3i"], answer: "2 - 3i" },
+            { question: "Real part of (-1 + √(-2))² is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-1" },
+            { question: "Imaginary part of (-1 + √(-2))² is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-2√2" },
+            { question: "p/q is a/an ________ number (where q ≠ 0):", options: ["irrational", "rational", "natural", "whole"], answer: "rational" },
+            { question: "Every terminating decimal fraction represents a/an:", options: ["irrational number", "rational number", "natural number", "whole number"], answer: "rational number" },
+            { question: "The value of i (iota) is:", options: ["√(-1)", "-1", "+1", "(-1)²"], answer: "√(-1)" },
+            { question: "In -2 + 3i, 3 is called:", options: ["imaginary part", "real part", "negative part", "complex number"], answer: "imaginary part" },
+            { question: "The set of natural numbers is:", options: ["{0,1,2,3...}", "{2,4,6...}", "{1,2,3...}", "{2,3,5,7...}"], answer: "{1,2,3...}" },
+            { question: "π, e, √2, √3 and √5 are called:", options: ["irrational numbers", "rational numbers", "natural numbers", "real numbers"], answer: "irrational numbers" },
+            { question: "If x + iy + 1 = 4 - 3i, then:", options: ["x=4, y=-3", "x=3, y=3", "x=3, y=-3", "x=5, y=-3"], answer: "x=3, y=-3" },
+            { question: "The p/q form of 0.3̄ is:", options: ["3/10", "1/3", "0.33", "10/3"], answer: "1/3" },
+
+            // IMAGE 2: MATRICES
+            { question: "The order of matrix [2  1] is:", options: ["2-by-1", "1-by-2", "1-by-1", "2-by-2"], answer: "1-by-2" },
+            { question: "A matrix with elements [√2, 0] on top row and [0, √2] on bottom row is called a:", options: ["zero matrix", "unit matrix", "scalar matrix", "singular matrix"], answer: "scalar matrix" },
+            { question: "Which is the order of a square matrix?", options: ["2-by-2", "1-by-2", "2-by-1", "3-by-2"], answer: "2-by-2" },
+            { question: "Which is the order of a rectangular matrix?", options: ["2-by-2", "4-by-4", "2-by-1", "3-by-3"], answer: "2-by-1" },
+            { question: "The order of the transpose of a column matrix [[2],[0],[3]] is:", options: ["3-by-2", "2-by-3", "1-by-3", "3-by-1"], answer: "1-by-3" },
+            { question: "Adjoint of matrix [[1, 2], [0, -1]] is:", options: [ "[[-1, -2], [0, 1]]", "[[1, -2], [0, -1]]", "[[-1, 2], [0, -1]]", "[[1, 1], [2, 2]]" ], answer: "[[-1, -2], [0, 1]]" },
+            { question: "If |2   6| on top and |3   x| on bottom equals 0, then x is equal to:", options: ["9", "-6", "6", "-9"], answer: "9" },
+            { question: "Product of [x  y] and vertical matrix [[2],[-1]] is:", options: ["[2x + y]", "[x - 2y]", "[2x - y]", "[x + 2y]"], answer: "[2x - y]" },
+            { question: "If X + [[-1, -2], [0, -1]] = [[1, 0], [0, 1]], then X is equal to:", options: [ "[[2, 2], [0, 2]]", "[[0, 2], [2, 2]]", "[[2, 0], [0, 2]]", "[[0, 2], [0, 2]]" ], answer: "[[2, 2], [0, 2]]" },
+            { question: "The idea of matrices was given by:", options: ["Arthur Cayley", "Leonard Euler", "Henry Briggs", "John Napier"], answer: "Arthur Cayley" },
+            { question: "If A = [[1, -2], [3, 4]] then -A = ", options: [ "[[-1, 2], [-3, -4]]", "[[1, -2], [-3, -4]]", "[[1, 2], [3, 4]]", "[[-1, 2], [3, -4]]" ], answer: "[[-1, 2], [-3, -4]]" },
+            { question: "A square matrix is symmetric if:", options: ["A^t = A", "A^-1 = A", "(A^t)^t = -A", "A^t = -A"], answer: "A^t = A" },
+            { question: "A square matrix is skew-symmetric if:", options: ["A^t = -A", "A^-1 = -A", "(A^t)^t = -A", "A^t = A"], answer: "A^t = -A" },
+            { question: "A square matrix A is called singular if:", options: ["|A| ≠ 0", "|A| = 0", "A = 0", "A^t = 0"], answer: "|A| = 0" },
+            { question: "A square matrix A is called non-singular if:", options: ["|A| = 0", "A = 0", "|A| ≠ 0", "A^t = 0"], answer: "|A| ≠ 0" },
+            { question: "According to rules of matrix inversion, (AB)^-1 =", options: ["A^-1 * B^-1", "B^-1 * A^-1", "BA", "AB"], answer: "B^-1 * A^-1" },
+            { question: "Additive inverse of [[1, -2], [0, -1]] is:", options: [ "[[-1, 2], [0, 1]]", "[[1, -2], [0, 1]]", "[[-1, -2], [0, -1]]", "[[1, -2], [0, -1]]" ], answer: "[[-1, 2], [0, 1]]" },
+            { question: "If A is a matrix then its transpose is denoted by:", options: ["A^-1", "A^t", "-A", "(A^t)^t"], answer: "A^t" },
+            { question: "Which of the following is a singular matrix?", options: ["[[1, 4], [2, 7]]", "[[1, 2], [3, 4]]", "[[1, 0], [0, 1]]", "[[1, 2], [3, 6]]"], answer: "[[1, 2], [3, 6]]" },
+            { question: "If A = [[a, b], [c, d]] then the det. A is:", options: ["ad - bc", "bc - ad", "ad + bc", "bc + ad"], answer: "ad - bc" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let studentAnswers = new Array(quizQuestions.length).fill(null);
+        let timerInterval;
+        let totalTime = 20 * 60; 
+        let studentName = "";
+        let rollNumber = "";
+
+        function startTest() {
+            studentName = document.getElementById('student-name').value.trim();
+            rollNumber = document.getElementById('roll-number').value.trim();
+
+            if (!studentName || !rollNumber) {
+                alert("Please type your valid Name and Roll number before starting the test.");
+                return;
+            }
+
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('test-screen').classList.remove('hidden');
+            document.getElementById('total-idx-text').innerText = quizQuestions.length;
+
+            startTimer();
+            showQuestion();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (totalTime <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timeout-banner').classList.remove('hidden');
+                    endTest();
+                } else {
+                    totalTime--;
+                    let mins = Math.floor(totalTime / 60);
+                    let secs = totalTime % 60;
+                    document.getElementById('timer-display').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                }
+            }, 1000);
+        }
+
+        function showQuestion() {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            document.getElementById('current-idx-text').innerText = currentQuestionIndex + 1;
+            document.getElementById('question-box').innerText = `Q${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+            
+            const optionsBox = document.getElementById('options-box');
+            optionsBox.innerHTML = ""; 
+
+            currentQuestion.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = "option-card";
+                if(studentAnswers[currentQuestionIndex] === option) {
+                    btn.classList.add('selected');
+                }
+                btn.innerText = option;
+                btn.onclick = () => selectOption(option);
+                optionsBox.appendChild(btn);
+            });
+
+            document.getElementById('prev-btn').disabled = (currentQuestionIndex === 0);
+            
+            if (currentQuestionIndex === quizQuestions.length - 1) {
+                document.getElementById('next-btn').classList.add('hidden');
+                document.getElementById('submit-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('next-btn').classList.remove('hidden');
+                document.getElementById('submit-btn').classList.add('hidden');
+            }
+        }
+
+        function selectOption(chosenValue) {
+            studentAnswers[currentQuestionIndex] = chosenValue;
+            
+            const buttons = document.querySelectorAll('.option-card');
+            buttons.forEach(b => {
+                if(b.innerText === chosenValue) b.classList.add('selected');
+                else b.classList.remove('selected');
+            });
+        }
+
+        function navigateQuestion(direction) {
+            currentQuestionIndex += direction;
+            showQuestion();
+        }
+
+        function confirmEndTest() {
+            if(confirm("Are you sure you want to finish and submit your test?")) {
+                clearInterval(timerInterval);
+                endTest();
+            }
+        }
+
+        function endTest() {
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            let finalScore = 0;
+            quizQuestions.forEach((q, idx) => {
+                if (studentAnswers[idx] === q.answer) {
+                    finalScore++;
+                }
+            });
+
+            document.getElementById('lbl-name').innerText = studentName;
+            document.getElementById('lbl-roll').innerText = rollNumber;
+            document.getElementById('final-score-val').innerText = `${finalScore}/${quizQuestions.length}`;
+        }
+    </script>
+</body>
+</html>
