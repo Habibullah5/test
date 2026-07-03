@@ -136,6 +136,15 @@
             line-height: 1.5;
         }
 
+        /* Support for exponents styled cleanly */
+        sup {
+            font-size: 13px;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+            top: -0.5em;
+        }
+
         .options-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -306,34 +315,35 @@
     </div>
 
     <script>
+        // --- 100% VISUALLY FORMATTED MATHEMATICAL QUESTION BANK ---
         const quizQuestions = [
-            // IMAGE 1: REAL & COMPLEX NUMBERS
-            { question: "Simplify: (27x^(-3))^(-1/3) =", options: ["3/x", "x/3", "3x", "1/(3x)"], answer: "x/3" },
-            { question: "Write 7th root of x in exponential form:", options: ["x", "x^7", "x^(1/7)", "x^(7/2)"], answer: "x^(1/7)" },
-            { question: "Write 4^(2/3) with a radical sign:", options: ["³√4²", "³√4", "√4³", "⁶√4"], answer: "³√4²" },
+            // IMAGE 1: REAL & COMPLEX NUMBERS WITH SUPERSCRIPTS
+            { question: "Simplify: (27x<sup>-3</sup>)<sup>-1/3</sup> =", options: ["3/x", "x/3", "3x", "1/(3x)"], answer: "x/3" },
+            { question: "Write 7<sup>th</sup> root of x in exponential form:", options: ["x", "x<sup>7</sup>", "x<sup>1/7</sup>", "x<sup>7/2</sup>"], answer: "x<sup>1/7</sup>" },
+            { question: "Write 4<sup>2/3</sup> with a radical sign:", options: ["³√4²", "³√4", "√4³", "⁶√4"], answer: "³√4²" },
             { question: "In ³√35, the radicand is:", options: ["3", "1/3", "35", "None of these"], answer: "35" },
-            { question: "Simplify: (25/16)^(-1/2) =", options: ["5/4", "4/5", "-5/4", "-4/5"], answer: "4/5" },
+            { question: "Simplify: (25/16)<sup>-1/2</sup> =", options: ["5/4", "4/5", "-5/4", "-4/5"], answer: "4/5" },
             { question: "The conjugate of 5 + 4i is:", options: ["-5 + 4i", "-5 - 4i", "5 - 4i", "5 + 4i"], answer: "5 - 4i" },
-            { question: "The value of i^9 is:", options: ["1", "-1", "i", "-i"], answer: "i" },
+            { question: "The value of i<sup>9</sup> is:", options: ["1", "-1", "i", "-i"], answer: "i" },
             { question: "Every real number is:", options: ["A positive integer", "A rational number", "A negative integer", "A complex number"], answer: "A complex number" },
-            { question: "Real part of 2ab(i + i²) is:", options: ["2ab", "-2ab", "2abi", "-2abi"], answer: "-2ab" },
+            { question: "Real part of 2ab(i + i<sup>2</sup>) is:", options: ["2ab", "-2ab", "2abi", "-2abi"], answer: "-2ab" },
             { question: "Imaginary part of -i(3i + 2) is:", options: ["-2", "2", "3", "-3"], answer: "-2" },
-            { question: "Which of the following sets have the closure property w.r.t. addition?", options: ["{0}", "{0, -1}", "{0, 1}", "{1, √2, 1/√2}"], answer: "{0}" },
+            { question: "Which of the following sets have the closure property w.r.t. addition?", options: ["{0}", "{0, -1}", "{0, 1}", "{1, √2, 1/Contract}"], answer: "{0}" },
             { question: "Name the property of real numbers used in (-√5/2) × 1 = -√5/2:", options: ["Additive identity", "Additive Inverse", "Multiplicative identity", "Multiplicative Inverse"], answer: "Multiplicative identity" },
             { question: "If x, y, z ∈ R and z < 0, then x < y ⇒", options: ["xz < yz", "xz > yz", "xz = yz", "none of these"], answer: "xz > yz" },
             { question: "If a, b ∈ R, then only one of a = b or a < b or a > b holds is called:", options: ["Trichotomy property", "Transitive property", "Additive property", "Multiplicative property"], answer: "Trichotomy property" },
             { question: "A non-terminating, non-recurring decimal represents:", options: ["A natural number", "A rational number", "An irrational number", "A prime number"], answer: "An irrational number" },
             { question: "The union of the set of rational numbers and irrational numbers is known as set of:", options: ["Rational number", "Irrational", "Real number", "Whole number"], answer: "Real number" },
             { question: "√5 · √5 is a ________ number.", options: ["Rational", "Irrational", "Real", "None"], answer: "Rational" },
-            { question: "n-th root of ab (ⁿ√(ab)) is equivalent to:", options: ["ⁿ√a · ⁿ√b", "√a · √b", "ⁿ√a · √b", "(d) √a · ⁿ√b"], answer: "ⁿ√a · ⁿ√b" },
-            { question: "⁵√(-8) = ______", options: ["(-8)^(-1/5)", "(-8)^5", "(-8)^(1/5)", "(d) (8)^(1/5)"], answer: "(-8)^(1/5)" },
-            { question: "The value of i^10 is:", options: ["-1", "1", "-i", "i"], answer: "-1" },
+            { question: "n-th root of ab (ⁿ√(ab)) is equivalent to:", options: ["ⁿ√a · ⁿ√b", "√a · √b", "ⁿ√a · √b", "√a · ⁿ√b"], answer: "ⁿ√a · ⁿ√b" },
+            { question: "⁵√(-8) = ______", options: ["(-8)<sup>-1/5</sup>", "(-8)<sup>5</sup>", "(-8)<sup>1/5</sup>", "(8)<sup>1/5</sup>"], answer: "(-8)<sup>1/5</sup>" },
+            { question: "The value of i<sup>10</sup> is:", options: ["-1", "1", "-i", "i"], answer: "-1" },
             { question: "The conjugate of 2 + 3i is:", options: ["2 - 3i", "-2 - 3i", "-2 + 3i", "2 + 3i"], answer: "2 - 3i" },
-            { question: "Real part of (-1 + √(-2))² is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-1" },
-            { question: "Imaginary part of (-1 + √(-2))² is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-2√2" },
+            { question: "Real part of (-1 + √(-2))<sup>2</sup> is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-1" },
+            { question: "Imaginary part of (-1 + √(-2))<sup>2</sup> is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-2√2" },
             { question: "p/q is a/an ________ number (where q ≠ 0):", options: ["irrational", "rational", "natural", "whole"], answer: "rational" },
             { question: "Every terminating decimal fraction represents a/an:", options: ["irrational number", "rational number", "natural number", "whole number"], answer: "rational number" },
-            { question: "The value of i (iota) is:", options: ["√(-1)", "-1", "+1", "(-1)²"], answer: "√(-1)" },
+            { question: "The value of i (iota) is:", options: ["√(-1)", "-1", "+1", "(-1)<sup>2</sup>"], answer: "√(-1)" },
             { question: "In -2 + 3i, 3 is called:", options: ["imaginary part", "real part", "negative part", "complex number"], answer: "imaginary part" },
             { question: "The set of natural numbers is:", options: ["{0,1,2,3...}", "{2,4,6...}", "{1,2,3...}", "{2,3,5,7...}"], answer: "{1,2,3...}" },
             { question: "π, e, √2, √3 and √5 are called:", options: ["irrational numbers", "rational numbers", "natural numbers", "real numbers"], answer: "irrational numbers" },
@@ -352,13 +362,13 @@
             { question: "If X + [[-1, -2], [0, -1]] = [[1, 0], [0, 1]], then X is equal to:", options: [ "[[2, 2], [0, 2]]", "[[0, 2], [2, 2]]", "[[2, 0], [0, 2]]", "[[0, 2], [0, 2]]" ], answer: "[[2, 2], [0, 2]]" },
             { question: "The idea of matrices was given by:", options: ["Arthur Cayley", "Leonard Euler", "Henry Briggs", "John Napier"], answer: "Arthur Cayley" },
             { question: "If A = [[1, -2], [3, 4]] then -A = ", options: [ "[[-1, 2], [-3, -4]]", "[[1, -2], [-3, -4]]", "[[1, 2], [3, 4]]", "[[-1, 2], [3, -4]]" ], answer: "[[-1, 2], [-3, -4]]" },
-            { question: "A square matrix is symmetric if:", options: ["A^t = A", "A^-1 = A", "(A^t)^t = -A", "A^t = -A"], answer: "A^t = A" },
-            { question: "A square matrix is skew-symmetric if:", options: ["A^t = -A", "A^-1 = -A", "(A^t)^t = -A", "A^t = A"], answer: "A^t = -A" },
-            { question: "A square matrix A is called singular if:", options: ["|A| ≠ 0", "|A| = 0", "A = 0", "A^t = 0"], answer: "|A| = 0" },
-            { question: "A square matrix A is called non-singular if:", options: ["|A| = 0", "A = 0", "|A| ≠ 0", "A^t = 0"], answer: "|A| ≠ 0" },
-            { question: "According to rules of matrix inversion, (AB)^-1 =", options: ["A^-1 * B^-1", "B^-1 * A^-1", "BA", "AB"], answer: "B^-1 * A^-1" },
+            { question: "A square matrix is symmetric if:", options: ["A<sup>t</sup> = A", "A<sup>-1</sup> = A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = -A"], answer: "A<sup>t</sup> = A" },
+            { question: "A square matrix is skew-symmetric if:", options: ["A<sup>t</sup> = -A", "A<sup>-1</sup> = -A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = A"], answer: "A<sup>t</sup> = -A" },
+            { question: "A square matrix A is called singular if:", options: ["|A| ≠ 0", "|A| = 0", "A = 0", "A<sup>t</sup> = 0"], answer: "|A| = 0" },
+            { question: "A square matrix A is called non-singular if:", options: ["|A| = 0", "A = 0", "|A| ≠ 0", "A<sup>t</sup> = 0"], answer: "|A| ≠ 0" },
+            { question: "According to rules of matrix inversion, (AB)<sup>-1</sup> =", options: ["A<sup>-1</sup>B<sup>-1</sup>", "B<sup>-1</sup>A<sup>-1</sup>", "BA", "AB"], answer: "B<sup>-1</sup>A<sup>-1</sup>" },
             { question: "Additive inverse of [[1, -2], [0, -1]] is:", options: [ "[[-1, 2], [0, 1]]", "[[1, -2], [0, 1]]", "[[-1, -2], [0, -1]]", "[[1, -2], [0, -1]]" ], answer: "[[-1, 2], [0, 1]]" },
-            { question: "If A is a matrix then its transpose is denoted by:", options: ["A^-1", "A^t", "-A", "(A^t)^t"], answer: "A^t" },
+            { question: "If A is a matrix then its transpose is denoted by:", options: ["A<sup>-1</sup>", "A<sup>t</sup>", "-A", "(A<sup>t</sup>)<sup>t</sup>"], answer: "A<sup>t</sup>" },
             { question: "Which of the following is a singular matrix?", options: ["[[1, 4], [2, 7]]", "[[1, 2], [3, 4]]", "[[1, 0], [0, 1]]", "[[1, 2], [3, 6]]"], answer: "[[1, 2], [3, 6]]" },
             { question: "If A = [[a, b], [c, d]] then the det. A is:", options: ["ad - bc", "bc - ad", "ad + bc", "bc + ad"], answer: "ad - bc" }
         ];
@@ -405,7 +415,9 @@
         function showQuestion() {
             const currentQuestion = quizQuestions[currentQuestionIndex];
             document.getElementById('current-idx-text').innerText = currentQuestionIndex + 1;
-            document.getElementById('question-box').innerText = `Q${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+            
+            // Crucial Change: Using innerHTML so browser compiles mathematical <sup> tags beautifully
+            document.getElementById('question-box').innerHTML = `Q${currentQuestionIndex + 1}. ${currentQuestion.question}`;
             
             const optionsBox = document.getElementById('options-box');
             optionsBox.innerHTML = ""; 
@@ -416,7 +428,7 @@
                 if(studentAnswers[currentQuestionIndex] === option) {
                     btn.classList.add('selected');
                 }
-                btn.innerText = option;
+                btn.innerHTML = option; // Allows exponents in choice buttons too
                 btn.onclick = () => selectOption(option);
                 optionsBox.appendChild(btn);
             });
@@ -437,7 +449,7 @@
             
             const buttons = document.querySelectorAll('.option-card');
             buttons.forEach(b => {
-                if(b.innerText === chosenValue) b.classList.add('selected');
+                if(b.innerHTML === chosenValue) b.classList.add('selected');
                 else b.classList.remove('selected');
             });
         }
