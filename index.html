@@ -133,16 +133,57 @@
             color: var(--text-main);
             font-weight: 600;
             margin-bottom: 25px;
-            line-height: 1.5;
+            line-height: 1.6;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px;
         }
 
-        /* Support for exponents styled cleanly */
         sup {
             font-size: 13px;
             line-height: 0;
             position: relative;
             vertical-align: baseline;
             top: -0.5em;
+        }
+
+        /* TEXTBOOK MATRIX STYLE SETUP */
+        .matrix {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 5px;
+            border-left: 2px solid #000;
+            border-right: 2px solid #000;
+            padding: 0 4px;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .matrix-det {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 5px;
+            border-left: 2px solid #000;
+            border-right: 2px solid #000;
+            padding: 0 4px;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .matrix-col {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding: 0 4px;
+            gap: 2px;
+        }
+
+        .matrix-cell {
+            min-width: 16px;
+            height: 22px;
+            line-height: 22px;
+            font-size: 17px;
         }
 
         .options-grid {
@@ -160,6 +201,9 @@
             text-align: left;
             font-size: 16px;
             color: var(--text-main);
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
         }
 
         .option-card:hover {
@@ -278,8 +322,8 @@
 
     <div id="test-screen" class="card hidden">
         <div class="quiz-header">
-            <div class="progress-text">Question <span id="current-idx-text">1</span> of <span id="total-idx-text">51</span></div>
-            <div class="timer-badge" id="timer-display">20:00</div>
+            <div class="progress-text">Question <span id="current-idx-text">1</span> of <span id="total-idx-text">20</span></div>
+            <div class="timer-badge" id="timer-display">10:00</div>
         </div>
         
         <div class="question-text" id="question-box"></div>
@@ -315,68 +359,138 @@
     </div>
 
     <script>
-        // --- 100% VISUALLY FORMATTED MATHEMATICAL QUESTION BANK ---
         const quizQuestions = [
-            // IMAGE 1: REAL & COMPLEX NUMBERS WITH SUPERSCRIPTS
-            { question: "Simplify: (27x<sup>-3</sup>)<sup>-1/3</sup> =", options: ["3/x", "x/3", "3x", "1/(3x)"], answer: "x/3" },
-            { question: "Write 7<sup>th</sup> root of x in exponential form:", options: ["x", "x<sup>7</sup>", "x<sup>1/7</sup>", "x<sup>7/2</sup>"], answer: "x<sup>1/7</sup>" },
-            { question: "Write 4<sup>2/3</sup> with a radical sign:", options: ["³√4²", "³√4", "√4³", "⁶√4"], answer: "³√4²" },
-            { question: "In ³√35, the radicand is:", options: ["3", "1/3", "35", "None of these"], answer: "35" },
-            { question: "Simplify: (25/16)<sup>-1/2</sup> =", options: ["5/4", "4/5", "-5/4", "-4/5"], answer: "4/5" },
-            { question: "The conjugate of 5 + 4i is:", options: ["-5 + 4i", "-5 - 4i", "5 - 4i", "5 + 4i"], answer: "5 - 4i" },
-            { question: "The value of i<sup>9</sup> is:", options: ["1", "-1", "i", "-i"], answer: "i" },
-            { question: "Every real number is:", options: ["A positive integer", "A rational number", "A negative integer", "A complex number"], answer: "A complex number" },
-            { question: "Real part of 2ab(i + i<sup>2</sup>) is:", options: ["2ab", "-2ab", "2abi", "-2abi"], answer: "-2ab" },
-            { question: "Imaginary part of -i(3i + 2) is:", options: ["-2", "2", "3", "-3"], answer: "-2" },
-            { question: "Which of the following sets have the closure property w.r.t. addition?", options: ["{0}", "{0, -1}", "{0, 1}", "{1, √2, 1/Contract}"], answer: "{0}" },
-            { question: "Name the property of real numbers used in (-√5/2) × 1 = -√5/2:", options: ["Additive identity", "Additive Inverse", "Multiplicative identity", "Multiplicative Inverse"], answer: "Multiplicative identity" },
-            { question: "If x, y, z ∈ R and z < 0, then x < y ⇒", options: ["xz < yz", "xz > yz", "xz = yz", "none of these"], answer: "xz > yz" },
-            { question: "If a, b ∈ R, then only one of a = b or a < b or a > b holds is called:", options: ["Trichotomy property", "Transitive property", "Additive property", "Multiplicative property"], answer: "Trichotomy property" },
-            { question: "A non-terminating, non-recurring decimal represents:", options: ["A natural number", "A rational number", "An irrational number", "A prime number"], answer: "An irrational number" },
-            { question: "The union of the set of rational numbers and irrational numbers is known as set of:", options: ["Rational number", "Irrational", "Real number", "Whole number"], answer: "Real number" },
-            { question: "√5 · √5 is a ________ number.", options: ["Rational", "Irrational", "Real", "None"], answer: "Rational" },
-            { question: "n-th root of ab (ⁿ√(ab)) is equivalent to:", options: ["ⁿ√a · ⁿ√b", "√a · √b", "ⁿ√a · √b", "√a · ⁿ√b"], answer: "ⁿ√a · ⁿ√b" },
-            { question: "⁵√(-8) = ______", options: ["(-8)<sup>-1/5</sup>", "(-8)<sup>5</sup>", "(-8)<sup>1/5</sup>", "(8)<sup>1/5</sup>"], answer: "(-8)<sup>1/5</sup>" },
-            { question: "The value of i<sup>10</sup> is:", options: ["-1", "1", "-i", "i"], answer: "-1" },
-            { question: "The conjugate of 2 + 3i is:", options: ["2 - 3i", "-2 - 3i", "-2 + 3i", "2 + 3i"], answer: "2 - 3i" },
-            { question: "Real part of (-1 + √(-2))<sup>2</sup> is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-1" },
-            { question: "Imaginary part of (-1 + √(-2))<sup>2</sup> is:", options: ["-1", "-2√2", "1", "2√2"], answer: "-2√2" },
-            { question: "p/q is a/an ________ number (where q ≠ 0):", options: ["irrational", "rational", "natural", "whole"], answer: "rational" },
-            { question: "Every terminating decimal fraction represents a/an:", options: ["irrational number", "rational number", "natural number", "whole number"], answer: "rational number" },
-            { question: "The value of i (iota) is:", options: ["√(-1)", "-1", "+1", "(-1)<sup>2</sup>"], answer: "√(-1)" },
-            { question: "In -2 + 3i, 3 is called:", options: ["imaginary part", "real part", "negative part", "complex number"], answer: "imaginary part" },
-            { question: "The set of natural numbers is:", options: ["{0,1,2,3...}", "{2,4,6...}", "{1,2,3...}", "{2,3,5,7...}"], answer: "{1,2,3...}" },
-            { question: "π, e, √2, √3 and √5 are called:", options: ["irrational numbers", "rational numbers", "natural numbers", "real numbers"], answer: "irrational numbers" },
-            { question: "If x + iy + 1 = 4 - 3i, then:", options: ["x=4, y=-3", "x=3, y=3", "x=3, y=-3", "x=5, y=-3"], answer: "x=3, y=-3" },
-            { question: "The p/q form of 0.3̄ is:", options: ["3/10", "1/3", "0.33", "10/3"], answer: "1/3" },
-
-            // IMAGE 2: MATRICES
-            { question: "The order of matrix [2  1] is:", options: ["2-by-1", "1-by-2", "1-by-1", "2-by-2"], answer: "1-by-2" },
-            { question: "A matrix with elements [√2, 0] on top row and [0, √2] on bottom row is called a:", options: ["zero matrix", "unit matrix", "scalar matrix", "singular matrix"], answer: "scalar matrix" },
-            { question: "Which is the order of a square matrix?", options: ["2-by-2", "1-by-2", "2-by-1", "3-by-2"], answer: "2-by-2" },
-            { question: "Which is the order of a rectangular matrix?", options: ["2-by-2", "4-by-4", "2-by-1", "3-by-3"], answer: "2-by-1" },
-            { question: "The order of the transpose of a column matrix [[2],[0],[3]] is:", options: ["3-by-2", "2-by-3", "1-by-3", "3-by-1"], answer: "1-by-3" },
-            { question: "Adjoint of matrix [[1, 2], [0, -1]] is:", options: [ "[[-1, -2], [0, 1]]", "[[1, -2], [0, -1]]", "[[-1, 2], [0, -1]]", "[[1, 1], [2, 2]]" ], answer: "[[-1, -2], [0, 1]]" },
-            { question: "If |2   6| on top and |3   x| on bottom equals 0, then x is equal to:", options: ["9", "-6", "6", "-9"], answer: "9" },
-            { question: "Product of [x  y] and vertical matrix [[2],[-1]] is:", options: ["[2x + y]", "[x - 2y]", "[2x - y]", "[x + 2y]"], answer: "[2x - y]" },
-            { question: "If X + [[-1, -2], [0, -1]] = [[1, 0], [0, 1]], then X is equal to:", options: [ "[[2, 2], [0, 2]]", "[[0, 2], [2, 2]]", "[[2, 0], [0, 2]]", "[[0, 2], [0, 2]]" ], answer: "[[2, 2], [0, 2]]" },
-            { question: "The idea of matrices was given by:", options: ["Arthur Cayley", "Leonard Euler", "Henry Briggs", "John Napier"], answer: "Arthur Cayley" },
-            { question: "If A = [[1, -2], [3, 4]] then -A = ", options: [ "[[-1, 2], [-3, -4]]", "[[1, -2], [-3, -4]]", "[[1, 2], [3, 4]]", "[[-1, 2], [3, -4]]" ], answer: "[[-1, 2], [-3, -4]]" },
-            { question: "A square matrix is symmetric if:", options: ["A<sup>t</sup> = A", "A<sup>-1</sup> = A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = -A"], answer: "A<sup>t</sup> = A" },
-            { question: "A square matrix is skew-symmetric if:", options: ["A<sup>t</sup> = -A", "A<sup>-1</sup> = -A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = A"], answer: "A<sup>t</sup> = -A" },
-            { question: "A square matrix A is called singular if:", options: ["|A| ≠ 0", "|A| = 0", "A = 0", "A<sup>t</sup> = 0"], answer: "|A| = 0" },
-            { question: "A square matrix A is called non-singular if:", options: ["|A| = 0", "A = 0", "|A| ≠ 0", "A<sup>t</sup> = 0"], answer: "|A| ≠ 0" },
-            { question: "According to rules of matrix inversion, (AB)<sup>-1</sup> =", options: ["A<sup>-1</sup>B<sup>-1</sup>", "B<sup>-1</sup>A<sup>-1</sup>", "BA", "AB"], answer: "B<sup>-1</sup>A<sup>-1</sup>" },
-            { question: "Additive inverse of [[1, -2], [0, -1]] is:", options: [ "[[-1, 2], [0, 1]]", "[[1, -2], [0, 1]]", "[[-1, -2], [0, -1]]", "[[1, -2], [0, -1]]" ], answer: "[[-1, 2], [0, 1]]" },
-            { question: "If A is a matrix then its transpose is denoted by:", options: ["A<sup>-1</sup>", "A<sup>t</sup>", "-A", "(A<sup>t</sup>)<sup>t</sup>"], answer: "A<sup>t</sup>" },
-            { question: "Which of the following is a singular matrix?", options: ["[[1, 4], [2, 7]]", "[[1, 2], [3, 4]]", "[[1, 0], [0, 1]]", "[[1, 2], [3, 6]]"], answer: "[[1, 2], [3, 6]]" },
-            { question: "If A = [[a, b], [c, d]] then the det. A is:", options: ["ad - bc", "bc - ad", "ad + bc", "bc + ad"], answer: "ad - bc" }
+            { 
+                question: "The order of matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>1</div></div></div> is ...", 
+                options: ["2-by-1", "1-by-2", "1-by-1", "2-by-2"], 
+                answer: "1-by-2" 
+            },
+            { 
+                question: "The matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>√2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>√2</div></div></div> is called &nbsp;.......&nbsp; Matrix.", 
+                options: ["zero", "unit", "scalar", "singular"], 
+                answer: "scalar" 
+            },
+            { 
+                question: "Which is order of a square matrix?", 
+                options: ["2-by-2", "1-by-2", "2-by-1", "3-by-2"], 
+                answer: "2-by-2" 
+            },
+            { 
+                question: "Which is order of a rectangular matrix?", 
+                options: ["2-by-2", "4-by-4", "2-by-1", "3-by-3"], 
+                answer: "2-by-1" 
+            },
+            { 
+                question: "Order of transpose of matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>1</div><div class='matrix-cell'>2</div></div></div> is ...", 
+                options: ["3-by-2", "2-by-3", "1-by-3", "3-by-1"], 
+                answer: "2-by-3" 
+            },
+            { 
+                question: "Adjoint of matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-1</div></div></div> is &nbsp;........", 
+                options: [
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>1</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-1</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>1</div></div></div>"
+                ], 
+                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>1</div></div></div>" 
+            },
+            { 
+                question: "If determinant <div class='matrix-det'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>6</div><div class='matrix-cell'>x</div></div></div> = 0, then x is equal to:", 
+                options: ["9", "-6", "6", "-9"], 
+                answer: "9" 
+            },
+            { 
+                question: "Product of <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>x</div></div><div class='matrix-col'><div class='matrix-cell'>y</div></div></div> and <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-1</div></div></div> is &nbsp;........", 
+                options: ["[2x + y]", "[x - 2y]", "[2x - y]", "[x + 2y]"], 
+                answer: "[2x - y]" 
+            },
+            { 
+                question: "If X + <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div> = <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>1</div></div></div>, then matrix X is equal to &nbsp;........", 
+                options: [
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>2</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>"
+                ], 
+                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>" 
+            },
+            { 
+                question: "The idea of a matrices was given by:", 
+                options: ["Arthur Cayley", "Leonard Euler", "Henry Briggs", "John Napier"], 
+                answer: "Arthur Cayley" 
+            },
+            { 
+                question: "If A = <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>4</div></div></div> then -A = &nbsp;________", 
+                options: [
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>-3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-4</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>-3</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-4</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>4</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-4</div></div></div>"
+                ], 
+                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>-3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-4</div></div></div>" 
+            },
+            { 
+                question: "A square matrix is symmetric if &nbsp;___", 
+                options: ["A<sup>t</sup> = A", "A<sup>-1</sup> = A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = -A"], 
+                answer: "A<sup>t</sup> = A" 
+            },
+            { 
+                question: "A square matrix is skew-symmetric if &nbsp;___", 
+                options: ["A<sup>t</sup> = -A", "A<sup>-1</sup> = -A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = A"], 
+                answer: "A<sup>t</sup> = -A" 
+            },
+            { 
+                question: "A square matrix A is called singular if &nbsp;___", 
+                options: ["|A| ≠ 0", "|A| = 0", "A = 0", "A<sup>t</sup> = 0"], 
+                answer: "|A| = 0" 
+            },
+            { 
+                question: "A square matrix A is called non-singular if &nbsp;___", 
+                options: ["|A| = 0", "A = 0", "|A| ≠ 0", "A<sup>t</sup> = 0"], 
+                answer: "|A| ≠ 0" 
+            },
+            { 
+                question: "(AB)<sup>-1</sup> = &nbsp;_____", 
+                options: ["A<sup>-1</sup> B<sup>-1</sup>", "B<sup>-1</sup> A<sup>-1</sup>", "BA", "AB"], 
+                answer: "B<sup>-1</sup> A<sup>-1</sup>" 
+            },
+            { 
+                question: "Additive inverse of <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div> is &nbsp;___", 
+                options: [
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>1</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>1</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div>"
+                ], 
+                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>1</div></div></div>" 
+            },
+            { 
+                question: "If A is a matrix then its transpose is denoted by:", 
+                options: ["A<sup>-1</sup>", "A<sup>t</sup>", "-A", "(A<sup>t</sup>)<sup>t</sup>"], 
+                answer: "A<sup>t</sup>" 
+            },
+            { 
+                question: "Which of the following is singular matrix?", 
+                options: [
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>4</div><div class='matrix-cell'>7</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>4</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>1</div></div></div>", 
+                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>6</div></div></div>"
+                ], 
+                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>6</div></div></div>" 
+            },
+            { 
+                question: "If A = <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>a</div><div class='matrix-cell'>c</div></div><div class='matrix-col'><div class='matrix-cell'>b</div><div class='matrix-cell'>d</div></div></div> then the det. A is:", 
+                options: ["ad - bc", "bc - ad", "ad + bc", "bc + ad"], 
+                answer: "ad - bc" 
+            }
         ];
 
         let currentQuestionIndex = 0;
         let studentAnswers = new Array(quizQuestions.length).fill(null);
         let timerInterval;
-        let totalTime = 20 * 60; 
+        let totalTime = 10 * 60; 
         let studentName = "";
         let rollNumber = "";
 
@@ -415,8 +529,6 @@
         function showQuestion() {
             const currentQuestion = quizQuestions[currentQuestionIndex];
             document.getElementById('current-idx-text').innerText = currentQuestionIndex + 1;
-            
-            // Crucial Change: Using innerHTML so browser compiles mathematical <sup> tags beautifully
             document.getElementById('question-box').innerHTML = `Q${currentQuestionIndex + 1}. ${currentQuestion.question}`;
             
             const optionsBox = document.getElementById('options-box');
@@ -428,7 +540,7 @@
                 if(studentAnswers[currentQuestionIndex] === option) {
                     btn.classList.add('selected');
                 }
-                btn.innerHTML = option; // Allows exponents in choice buttons too
+                btn.innerHTML = option; 
                 btn.onclick = () => selectOption(option);
                 optionsBox.appendChild(btn);
             });
