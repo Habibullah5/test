@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summer Test</title>
+    <title>Summer Test Class 10th</title>
     <style>
         :root {
             --primary: #4f46e5;
@@ -134,10 +134,6 @@
             font-weight: 600;
             margin-bottom: 25px;
             line-height: 1.6;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 4px;
         }
 
         sup {
@@ -145,45 +141,25 @@
             line-height: 0;
             position: relative;
             vertical-align: baseline;
-            top: -0.5em;
+            top: -0.4em;
         }
 
-        /* TEXTBOOK MATRIX STYLE SETUP */
-        .matrix {
-            display: inline-flex;
-            align-items: center;
-            margin: 0 5px;
-            border-left: 2px solid #000;
-            border-right: 2px solid #000;
-            padding: 0 4px;
+        .frac {
+            display: inline-block;
             vertical-align: middle;
-            font-weight: bold;
-        }
-
-        .matrix-det {
-            display: inline-flex;
-            align-items: center;
-            margin: 0 5px;
-            border-left: 2px solid #000;
-            border-right: 2px solid #000;
-            padding: 0 4px;
-            vertical-align: middle;
-            font-weight: bold;
-        }
-
-        .matrix-col {
-            display: flex;
-            flex-direction: column;
             text-align: center;
-            padding: 0 4px;
-            gap: 2px;
+            font-size: 15px;
+            padding: 0 2px;
         }
-
-        .matrix-cell {
-            min-width: 16px;
-            height: 22px;
-            line-height: 22px;
-            font-size: 17px;
+        .frac > span {
+            display: block;
+            padding: 0 2px;
+        }
+        .frac span.num {
+            border-bottom: 1px solid #000;
+        }
+        .frac span.den {
+            padding-top: 1px;
         }
 
         .options-grid {
@@ -202,8 +178,6 @@
             font-size: 16px;
             color: var(--text-main);
             line-height: 1.4;
-            display: flex;
-            align-items: center;
         }
 
         .option-card:hover {
@@ -308,7 +282,7 @@
 <body>
 
     <div id="login-screen" class="card">
-        <h2>Summer Test</h2>
+        <h2>Summer Test Class 10th</h2>
         <div class="form-group">
             <label for="student-name">Student Full Name</label>
             <input type="text" id="student-name" placeholder="e.g., Muhammad Ali" autocomplete="off">
@@ -322,7 +296,7 @@
 
     <div id="test-screen" class="card hidden">
         <div class="quiz-header">
-            <div class="progress-text">Question <span id="current-idx-text">1</span> of <span id="total-idx-text">20</span></div>
+            <div class="progress-text">Question <span id="current-idx-text">1</span> of <span id="total-idx-text">35</span></div>
             <div class="timer-badge" id="timer-display">10:00</div>
         </div>
         
@@ -359,132 +333,46 @@
     </div>
 
     <script>
+        // --- ALL 35 QUESTIONS TRANSCRIBED FROM BOTH UPLOADED MATH IMAGES ---
         const quizQuestions = [
-            { 
-                question: "The order of matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>1</div></div></div> is ...", 
-                options: ["2-by-1", "1-by-2", "1-by-1", "2-by-2"], 
-                answer: "1-by-2" 
-            },
-            { 
-                question: "The matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>√2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>√2</div></div></div> is called &nbsp;.......&nbsp; Matrix.", 
-                options: ["zero", "unit", "scalar", "singular"], 
-                answer: "scalar" 
-            },
-            { 
-                question: "Which is order of a square matrix?", 
-                options: ["2-by-2", "1-by-2", "2-by-1", "3-by-2"], 
-                answer: "2-by-2" 
-            },
-            { 
-                question: "Which is order of a rectangular matrix?", 
-                options: ["2-by-2", "4-by-4", "2-by-1", "3-by-3"], 
-                answer: "2-by-1" 
-            },
-            { 
-                question: "Order of transpose of matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>1</div><div class='matrix-cell'>2</div></div></div> is ...", 
-                options: ["3-by-2", "2-by-3", "1-by-3", "3-by-1"], 
-                answer: "2-by-3" 
-            },
-            { 
-                question: "Adjoint of matrix <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-1</div></div></div> is &nbsp;........", 
-                options: [
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>1</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-1</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>1</div></div></div>"
-                ], 
-                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>1</div></div></div>" 
-            },
-            { 
-                question: "If determinant <div class='matrix-det'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>6</div><div class='matrix-cell'>x</div></div></div> = 0, then x is equal to:", 
-                options: ["9", "-6", "6", "-9"], 
-                answer: "9" 
-            },
-            { 
-                question: "Product of <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>x</div></div><div class='matrix-col'><div class='matrix-cell'>y</div></div></div> and <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-1</div></div></div> is &nbsp;........", 
-                options: ["[2x + y]", "[x - 2y]", "[2x - y]", "[x + 2y]"], 
-                answer: "[2x - y]" 
-            },
-            { 
-                question: "If X + <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div> = <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>1</div></div></div>, then matrix X is equal to &nbsp;........", 
-                options: [
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>2</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>"
-                ], 
-                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>2</div></div></div>" 
-            },
-            { 
-                question: "The idea of a matrices was given by:", 
-                options: ["Arthur Cayley", "Leonard Euler", "Henry Briggs", "John Napier"], 
-                answer: "Arthur Cayley" 
-            },
-            { 
-                question: "If A = <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>4</div></div></div> then -A = &nbsp;________", 
-                options: [
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>-3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-4</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>-3</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-4</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>4</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-4</div></div></div>"
-                ], 
-                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>-3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>-4</div></div></div>" 
-            },
-            { 
-                question: "A square matrix is symmetric if &nbsp;___", 
-                options: ["A<sup>t</sup> = A", "A<sup>-1</sup> = A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = -A"], 
-                answer: "A<sup>t</sup> = A" 
-            },
-            { 
-                question: "A square matrix is skew-symmetric if &nbsp;___", 
-                options: ["A<sup>t</sup> = -A", "A<sup>-1</sup> = -A", "(A<sup>t</sup>)<sup>t</sup> = -A", "A<sup>t</sup> = A"], 
-                answer: "A<sup>t</sup> = -A" 
-            },
-            { 
-                question: "A square matrix A is called singular if &nbsp;___", 
-                options: ["|A| ≠ 0", "|A| = 0", "A = 0", "A<sup>t</sup> = 0"], 
-                answer: "|A| = 0" 
-            },
-            { 
-                question: "A square matrix A is called non-singular if &nbsp;___", 
-                options: ["|A| = 0", "A = 0", "|A| ≠ 0", "A<sup>t</sup> = 0"], 
-                answer: "|A| ≠ 0" 
-            },
-            { 
-                question: "(AB)<sup>-1</sup> = &nbsp;_____", 
-                options: ["A<sup>-1</sup> B<sup>-1</sup>", "B<sup>-1</sup> A<sup>-1</sup>", "BA", "AB"], 
-                answer: "B<sup>-1</sup> A<sup>-1</sup>" 
-            },
-            { 
-                question: "Additive inverse of <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div> is &nbsp;___", 
-                options: [
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>1</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>1</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>-2</div><div class='matrix-cell'>-1</div></div></div>"
-                ], 
-                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>-1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>1</div></div></div>" 
-            },
-            { 
-                question: "If A is a matrix then its transpose is denoted by:", 
-                options: ["A<sup>-1</sup>", "A<sup>t</sup>", "-A", "(A<sup>t</sup>)<sup>t</sup>"], 
-                answer: "A<sup>t</sup>" 
-            },
-            { 
-                question: "Which of the following is singular matrix?", 
-                options: [
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>2</div></div><div class='matrix-col'><div class='matrix-cell'>4</div><div class='matrix-cell'>7</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>4</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>0</div></div><div class='matrix-col'><div class='matrix-cell'>0</div><div class='matrix-cell'>1</div></div></div>", 
-                    "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>6</div></div></div>"
-                ], 
-                answer: "<div class='matrix'><div class='matrix-col'><div class='matrix-cell'>1</div><div class='matrix-cell'>3</div></div><div class='matrix-col'><div class='matrix-cell'>2</div><div class='matrix-cell'>6</div></div></div>" 
-            },
-            { 
-                question: "If A = <div class='matrix'><div class='matrix-col'><div class='matrix-cell'>a</div><div class='matrix-cell'>c</div></div><div class='matrix-col'><div class='matrix-cell'>b</div><div class='matrix-cell'>d</div></div></div> then the det. A is:", 
-                options: ["ad - bc", "bc - ad", "ad + bc", "bc + ad"], 
-                answer: "ad - bc" 
-            }
+            // PAGE 1 (Green 1)
+            { question: "Standard form of quadratic equation is:", options: ["8x+c=0, b≠0", "ax<sup>2</sup>+bx+c=0, a≠0", "ax<sup>2</sup>=bx, a≠0", "ax<sup>2</sup>=0, a≠0"], answer: "ax<sup>2</sup>+bx+c=0, a≠0" },
+            { question: "The number of terms in a standard quadratic equation ax<sup>2</sup>+bx+c=0 is:", options: ["1", "2", "3", "4"], answer: "3" },
+            { question: "The number of methods to solve a quadratic equation is:", options: ["1", "2", "3", "4"], answer: "3" },
+            { question: "The quadratic formula is:", options: ["<div class='frac'><span class='num'>-b ± √b<sup>2</sup>-4ac</span><span class='den'>2a</span></div>", "<div class='frac'><span class='num'>b ± √b<sup>2</sup>-4ac</span><span class='den'>2a</span></div>", "<div class='frac'><span class='num'>-b ± √b<sup>2</sup>+4ac</span><span class='den'>2a</span></div>", "<div class='frac'><span class='num'>b ± √b<sup>2</sup>+4ac</span><span class='den'>2a</span></div>"], answer: "<div class='frac'><span class='num'>-b ± √b<sup>2</sup>-4ac</span><span class='den'>2a</span></div>" },
+            { question: "Two linear factors of x<sup>2</sup> - 15x + 56 are:", options: ["(x - 7) and (x + 8)", "(x + 7) and (x - 8)", "(x - 7) and (x - 8)", "(x + 7) and (x + 8)"], answer: "(x - 7) and (x - 8)" },
+            { question: "An equation, which remains unchanged when x is replaced by <div class='frac'><span class='num'>1</span><span class='den'>x</span></div> is called a/an:", options: ["Exponential equation", "Reciprocal equation", "Radical equation", "None of these"], answer: "Reciprocal equation" },
+            { question: "An equation of the type 3<sup>x</sup> + 3<sup>2-x</sup> + 6 = 0 is a/an:", options: ["Exponential equation", "Reciprocal equation", "Radical equation", "None of these"], answer: "Exponential equation" },
+            { question: "The solution set of equation 4x<sup>2</sup> - 16 = 0 is:", options: ["{±4}", "{4}", "{±2}", "±2"], answer: "{±2}" },
+            { question: "An equation of the form 2x<sup>4</sup> - 3x<sup>3</sup> + 7x<sup>2</sup> - 3x + 2 = 0 is called a/an:", options: ["Reciprocal equation", "Radical equation", "Exponential equation", "None of these"], answer: "Reciprocal equation" },
+            { question: "The solution set of 25x<sup>2</sup> - 1 = 0 is:", options: ["{± 1/5}", "{-1/5}", "{1/5}", "None of these"], answer: "{± 1/5}" },
+            { question: "An equation of the form 2<sup>2x</sup> - 3.2<sup>x</sup> + 5 = 0 is called a /an _____ equation.", options: ["Exponential", "Radical", "Reciprocal", "None of these"], answer: "Exponential" },
+            { question: "The solution set of the equation x<sup>2</sup> - 9 = 0 is:", options: ["{±3}", "{3}", "{-3}", "{9}"], answer: "{±3}" },
+            { question: "An equation of type x<sup>4</sup> + x<sup>3</sup> + x<sup>2</sup> + x + 1 = 0 is called a/an .....equation.", options: ["Radical", "Reciprocal", "Exponential", "None of these"], answer: "Reciprocal" },
+            { question: "Solve the equation 5<sup>1+x</sup> + 5<sup>1-x</sup> = 26:", options: ["{1}", "{±1}", "{2}", "{±2}"], answer: "{±1}" },
+            { question: "The solution set of equation 2 + 9x = 5x<sup>2</sup> is:", options: ["{-1/5, 2}", "{1/5, 2}", "{1/5, -2}", "{-1/5, -2}"], answer: "{-1/5, 2}" },
+            
+            // PAGE 2 (Green 2 onwards)
+            { question: "The solution set of equation 5x<sup>2</sup> = 30x is:", options: ["{5, 30}", "{0, 6}", "{0, -6}", "{5, 0}"], answer: "{0, 6}" },
+            { question: "The solution set of equation x<sup>2</sup> - x - 2 = 0 is:", options: ["{2, 1}", "{-2, 1}", "{2, -1}", "{-2, -1}"], answer: "{2, -1}" },
+            { question: "The solution set of equation x<sup>2</sup> - 16 = 0 is:", options: ["{±4}", "{+4}", "{-4}", "None of these"], answer: "{±4}" },
+            { question: "The solution set of equation x<sup>2</sup> - 7x + 6 = 0 is:", options: ["{1, 6}", "{-1, -6}", "{-1, 6}", "{1, -6}"], answer: "{1, 6}" },
+            { question: "The solution set of equation 3x<sup>2</sup> + 4x = 5 is:", options: ["{ <div class='frac'><span class='num'>-2 ± √19</span><span class='den'>3</span></div> }", "{ <div class='frac'><span class='num'>2 ± √19</span><span class='den'>3</span></div> }", "{ <div class='frac'><span class='num'>4 ± √19</span><span class='den'>3</span></div> }", "None of these"], answer: "{ <div class='frac'><span class='num'>-2 ± √19</span><span class='den'>3</span></div> }" },
+            { question: "If b=0 in a quadratic equation ax<sup>2</sup>+bx+c=0, then it is called:", options: ["Pure quadratic equation", "Linear equation", "Quadratic equation", "Exponential equation"], answer: "Pure quadratic equation" },
+            { question: "Sentences involving the sign........ Between two algebraic expressions are called equations.", options: ["<", "≥", "=", "< or >"], answer: "=" },
+            { question: "The standard form of the quadratic equation is ax<sup>2</sup>+bx+c=0 where a, b, c are:", options: ["Irrational numbers", "Rational numbers", "Real numbers", "Whole numbers"], answer: "Real numbers" },
+            { question: "If a=0, in ax<sup>2</sup>+bx+c=0, then it reduces to:", options: ["Pure quadratic equation", "Linear equation", "Quadratic equations", "Exponential equation"], answer: "Linear equation" },
+            { question: "How many linear factors a quadratic equation has?", options: ["1", "2", "3", "4"], answer: "2" },
+            { question: "What is the degree of quadratic equation?", options: ["1", "2", "3", "4"], answer: "2" },
+            { question: "The number of roots of a quadratic equation is:", options: ["1", "2", "3", "4"], answer: "2" },
+            { question: "Cancellation of x on both sides of 5x<sup>2</sup> = 30x means:", options: ["The loss of one root", "No loss of any root", "Gain of one root", "Undefined solution"], answer: "The loss of one root" },
+            { question: "What should be done to make the co-efficient of x<sup>2</sup> equal to 1, in 7x<sup>2</sup>+2x-1=0?", options: ["Multiply the equation by 7", "Divide the equation by 7", "Add 7 in both sides", "Subtract 7 from both sides"], answer: "Divide the equation by 7" },
+            { question: "What should be done to make the co-efficient of x<sup>2</sup> equal to 1 in 3x<sup>2</sup> + 7x = 0?", options: ["Multiply the equation by 1/3", "Divide the equation by 3", "Add 1/3 in both sides", "Subtract 1/3 from both sides"], answer: "Divide the equation by 3" },
+            { question: "The value of variable of an equation not satisfying the equation is called:", options: ["Root", "Extraneous root", "Exponent", "Solution set"], answer: "Extraneous root" },
+            { question: "The cancellation of x on both sides of the equation of the type ax<sup>2</sup>=bx means the loss of one root. That root is always equal to:", options: ["0", "1", "A", "b"], answer: "0" },
+            { question: "If y=x<sup>-1</sup> and 3y=5, the value of x is:", options: ["5/3", "-5/3", "-3/5", "3/5"], answer: "3/5" },
+            { question: "If 2<sup>x</sup>=1, then x = .............", options: ["0", "1", "2", "none of these"], answer: "0" },
+            { question: "If y=2<sup>x</sup> and 8y =1, then, x=...", options: ["8", "1/8", "3", "-3"], answer: "-3" }
         ];
 
         let currentQuestionIndex = 0;
