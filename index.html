@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summer Test Class 10th</title>
+    <title>Physics Test for 9th Class</title>
     <style>
         :root {
             --primary: #4f46e5;
@@ -144,22 +144,12 @@
             top: -0.4em;
         }
 
-        .frac {
-            display: inline-block;
-            vertical-align: middle;
-            text-align: center;
-            font-size: 15px;
-            padding: 0 2px;
-        }
-        .frac > span {
-            display: block;
-            padding: 0 2px;
-        }
-        .frac span.num {
-            border-bottom: 1px solid #000;
-        }
-        .frac span.den {
-            padding-top: 1px;
+        sub {
+            font-size: 13px;
+            line-height: 0;
+            position: relative;
+            vertical-align: baseline;
+            bottom: -0.2em;
         }
 
         .options-grid {
@@ -282,7 +272,7 @@
 <body>
 
     <div id="login-screen" class="card">
-        <h2>Summer Test Class 10th</h2>
+        <h2>Physics Test for 9th Class</h2>
         <div class="form-group">
             <label for="student-name">Student Full Name</label>
             <input type="text" id="student-name" placeholder="e.g., Muhammad Ali" autocomplete="off">
@@ -296,8 +286,8 @@
 
     <div id="test-screen" class="card hidden">
         <div class="quiz-header">
-            <div class="progress-text">Question <span id="current-idx-text">1</span> of <span id="total-idx-text">35</span></div>
-            <div class="timer-badge" id="timer-display">10:00</div>
+            <div class="progress-text">Question <span id="current-idx-text">1</span> of <span id="total-idx-text">33</span></div>
+            <div class="timer-badge" id="timer-display">15:00</div>
         </div>
         
         <div class="question-text" id="question-box"></div>
@@ -333,52 +323,179 @@
     </div>
 
     <script>
-        // --- ALL 35 QUESTIONS TRANSCRIBED FROM BOTH UPLOADED MATH IMAGES ---
+        // --- ALL 33 QUESTIONS TRANSCRIBED FROM THE 9th PHYSICS PDF ---
         const quizQuestions = [
-            // PAGE 1 (Green 1)
-            { question: "Standard form of quadratic equation is:", options: ["8x+c=0, b≠0", "ax<sup>2</sup>+bx+c=0, a≠0", "ax<sup>2</sup>=bx, a≠0", "ax<sup>2</sup>=0, a≠0"], answer: "ax<sup>2</sup>+bx+c=0, a≠0" },
-            { question: "The number of terms in a standard quadratic equation ax<sup>2</sup>+bx+c=0 is:", options: ["1", "2", "3", "4"], answer: "3" },
-            { question: "The number of methods to solve a quadratic equation is:", options: ["1", "2", "3", "4"], answer: "3" },
-            { question: "The quadratic formula is:", options: ["<div class='frac'><span class='num'>-b ± √b<sup>2</sup>-4ac</span><span class='den'>2a</span></div>", "<div class='frac'><span class='num'>b ± √b<sup>2</sup>-4ac</span><span class='den'>2a</span></div>", "<div class='frac'><span class='num'>-b ± √b<sup>2</sup>+4ac</span><span class='den'>2a</span></div>", "<div class='frac'><span class='num'>b ± √b<sup>2</sup>+4ac</span><span class='den'>2a</span></div>"], answer: "<div class='frac'><span class='num'>-b ± √b<sup>2</sup>-4ac</span><span class='den'>2a</span></div>" },
-            { question: "Two linear factors of x<sup>2</sup> - 15x + 56 are:", options: ["(x - 7) and (x + 8)", "(x + 7) and (x - 8)", "(x - 7) and (x - 8)", "(x + 7) and (x + 8)"], answer: "(x - 7) and (x - 8)" },
-            { question: "An equation, which remains unchanged when x is replaced by <div class='frac'><span class='num'>1</span><span class='den'>x</span></div> is called a/an:", options: ["Exponential equation", "Reciprocal equation", "Radical equation", "None of these"], answer: "Reciprocal equation" },
-            { question: "An equation of the type 3<sup>x</sup> + 3<sup>2-x</sup> + 6 = 0 is a/an:", options: ["Exponential equation", "Reciprocal equation", "Radical equation", "None of these"], answer: "Exponential equation" },
-            { question: "The solution set of equation 4x<sup>2</sup> - 16 = 0 is:", options: ["{±4}", "{4}", "{±2}", "±2"], answer: "{±2}" },
-            { question: "An equation of the form 2x<sup>4</sup> - 3x<sup>3</sup> + 7x<sup>2</sup> - 3x + 2 = 0 is called a/an:", options: ["Reciprocal equation", "Radical equation", "Exponential equation", "None of these"], answer: "Reciprocal equation" },
-            { question: "The solution set of 25x<sup>2</sup> - 1 = 0 is:", options: ["{± 1/5}", "{-1/5}", "{1/5}", "None of these"], answer: "{± 1/5}" },
-            { question: "An equation of the form 2<sup>2x</sup> - 3.2<sup>x</sup> + 5 = 0 is called a /an _____ equation.", options: ["Exponential", "Radical", "Reciprocal", "None of these"], answer: "Exponential" },
-            { question: "The solution set of the equation x<sup>2</sup> - 9 = 0 is:", options: ["{±3}", "{3}", "{-3}", "{9}"], answer: "{±3}" },
-            { question: "An equation of type x<sup>4</sup> + x<sup>3</sup> + x<sup>2</sup> + x + 1 = 0 is called a/an .....equation.", options: ["Radical", "Reciprocal", "Exponential", "None of these"], answer: "Reciprocal" },
-            { question: "Solve the equation 5<sup>1+x</sup> + 5<sup>1-x</sup> = 26:", options: ["{1}", "{±1}", "{2}", "{±2}"], answer: "{±1}" },
-            { question: "The solution set of equation 2 + 9x = 5x<sup>2</sup> is:", options: ["{-1/5, 2}", "{1/5, 2}", "{1/5, -2}", "{-1/5, -2}"], answer: "{-1/5, 2}" },
-            
-            // PAGE 2 (Green 2 onwards)
-            { question: "The solution set of equation 5x<sup>2</sup> = 30x is:", options: ["{5, 30}", "{0, 6}", "{0, -6}", "{5, 0}"], answer: "{0, 6}" },
-            { question: "The solution set of equation x<sup>2</sup> - x - 2 = 0 is:", options: ["{2, 1}", "{-2, 1}", "{2, -1}", "{-2, -1}"], answer: "{2, -1}" },
-            { question: "The solution set of equation x<sup>2</sup> - 16 = 0 is:", options: ["{±4}", "{+4}", "{-4}", "None of these"], answer: "{±4}" },
-            { question: "The solution set of equation x<sup>2</sup> - 7x + 6 = 0 is:", options: ["{1, 6}", "{-1, -6}", "{-1, 6}", "{1, -6}"], answer: "{1, 6}" },
-            { question: "The solution set of equation 3x<sup>2</sup> + 4x = 5 is:", options: ["{ <div class='frac'><span class='num'>-2 ± √19</span><span class='den'>3</span></div> }", "{ <div class='frac'><span class='num'>2 ± √19</span><span class='den'>3</span></div> }", "{ <div class='frac'><span class='num'>4 ± √19</span><span class='den'>3</span></div> }", "None of these"], answer: "{ <div class='frac'><span class='num'>-2 ± √19</span><span class='den'>3</span></div> }" },
-            { question: "If b=0 in a quadratic equation ax<sup>2</sup>+bx+c=0, then it is called:", options: ["Pure quadratic equation", "Linear equation", "Quadratic equation", "Exponential equation"], answer: "Pure quadratic equation" },
-            { question: "Sentences involving the sign........ Between two algebraic expressions are called equations.", options: ["<", "≥", "=", "< or >"], answer: "=" },
-            { question: "The standard form of the quadratic equation is ax<sup>2</sup>+bx+c=0 where a, b, c are:", options: ["Irrational numbers", "Rational numbers", "Real numbers", "Whole numbers"], answer: "Real numbers" },
-            { question: "If a=0, in ax<sup>2</sup>+bx+c=0, then it reduces to:", options: ["Pure quadratic equation", "Linear equation", "Quadratic equations", "Exponential equation"], answer: "Linear equation" },
-            { question: "How many linear factors a quadratic equation has?", options: ["1", "2", "3", "4"], answer: "2" },
-            { question: "What is the degree of quadratic equation?", options: ["1", "2", "3", "4"], answer: "2" },
-            { question: "The number of roots of a quadratic equation is:", options: ["1", "2", "3", "4"], answer: "2" },
-            { question: "Cancellation of x on both sides of 5x<sup>2</sup> = 30x means:", options: ["The loss of one root", "No loss of any root", "Gain of one root", "Undefined solution"], answer: "The loss of one root" },
-            { question: "What should be done to make the co-efficient of x<sup>2</sup> equal to 1, in 7x<sup>2</sup>+2x-1=0?", options: ["Multiply the equation by 7", "Divide the equation by 7", "Add 7 in both sides", "Subtract 7 from both sides"], answer: "Divide the equation by 7" },
-            { question: "What should be done to make the co-efficient of x<sup>2</sup> equal to 1 in 3x<sup>2</sup> + 7x = 0?", options: ["Multiply the equation by 1/3", "Divide the equation by 3", "Add 1/3 in both sides", "Subtract 1/3 from both sides"], answer: "Divide the equation by 3" },
-            { question: "The value of variable of an equation not satisfying the equation is called:", options: ["Root", "Extraneous root", "Exponent", "Solution set"], answer: "Extraneous root" },
-            { question: "The cancellation of x on both sides of the equation of the type ax<sup>2</sup>=bx means the loss of one root. That root is always equal to:", options: ["0", "1", "A", "b"], answer: "0" },
-            { question: "If y=x<sup>-1</sup> and 3y=5, the value of x is:", options: ["5/3", "-5/3", "-3/5", "3/5"], answer: "3/5" },
-            { question: "If 2<sup>x</sup>=1, then x = .............", options: ["0", "1", "2", "none of these"], answer: "0" },
-            { question: "If y=2<sup>x</sup> and 8y =1, then, x=...", options: ["8", "1/8", "3", "-3"], answer: "-3" }
+            { 
+                question: "The branch of physics which deals with extremely small bodies and discrete nature is:", 
+                options: ["Quantum physics", "Relativity", "Magnetism", "Mechanics"], 
+                answer: "Quantum physics" 
+            },
+            { 
+                question: "The mathematical form of physics is......", 
+                options: ["E = mc", "E = mc<sup>2</sup>", "E = m<sup>2</sup>", "None"], 
+                answer: "E = mc<sup>2</sup>" 
+            },
+            { 
+                question: "Taste is a ________ quantity.", 
+                options: ["physical", "Non physical", "Base", "Derived"], 
+                answer: "Non physical" 
+            },
+            { 
+                question: "Which of the following is not a base quantity?", 
+                options: ["Time", "Speed", "current", "mass"], 
+                answer: "Speed" 
+            },
+            { 
+                question: "Alternate unit for 'N' (Newton) is...", 
+                options: ["Kg m/s", "Kg m/s<sup>2</sup>", "Kg m<sup>2</sup>/s", "Kg m<sup>2</sup>/s<sup>2</sup>"], 
+                answer: "Kg m/s<sup>2</sup>" 
+            },
+            { 
+                question: "The unit of Light intensity is:", 
+                options: ["candela", "mole", "ampere", "kelvin"], 
+                answer: "candela" 
+            },
+            { 
+                question: "Least count of vernier calliper is:", 
+                options: ["0.1mm", "0.01cm", "0.001cm", "Both A & B"], 
+                answer: "Both A & B" 
+            },
+            { 
+                question: "1 picofarad is equal to.....", 
+                options: ["1 × 10<sup>-12</sup> F", "1 × 10<sup>-15</sup> F", "1 × 10<sup>+15</sup> F", "1 × 10<sup>12</sup> F"], 
+                answer: "1 × 10<sup>-12</sup> F" 
+            },
+            { 
+                question: "Which of the following is not in proper scientific notation?", 
+                options: ["3.4 × 10<sup>5</sup>", "0.56 × 10<sup>9</sup>", "9.1 × 10<sup>-3</sup>", "1.0 × 10<sup>0</sup>"], 
+                answer: "0.56 × 10<sup>9</sup>" 
+            },
+            { 
+                question: "What is (9 × 10<sup>-3</sup>)<sup>2</sup> in scientific notation?", 
+                options: ["81 × 10<sup>-6</sup>", "8.1 × 10<sup>-5</sup>", "8.1 × 10<sup>-6</sup>", "81 × 10<sup>-9</sup>"], 
+                answer: "8.1 × 10<sup>-5</sup>" 
+            },
+            { 
+                question: "Write 0.00072 in scientific notation:", 
+                options: ["7.2 × 10<sup>5</sup>", "7.2 × 10<sup>4</sup>", "7.2 × 10<sup>-4</sup>", "7.2 × 10<sup>-5</sup>"], 
+                answer: "7.2 × 10<sup>-4</sup>" 
+            },
+            { 
+                question: "The number of seconds in one year in scientific notation is:", 
+                options: ["3.1536 × 10<sup>7</sup> s", "3.1536 × 10<sup>8</sup> s", "3.1538 × 10<sup>7</sup> s", "3.1538 × 10<sup>8</sup> s"], 
+                answer: "3.1536 × 10<sup>7</sup> s" 
+            },
+            { 
+                question: "Which prefix represents the smallest value?", 
+                options: ["nano", "micro", "milli", "Exa"], 
+                answer: "nano" 
+            },
+            { 
+                question: "nano × milli = ...", 
+                options: ["femto", "hecto", "pico", "atto"], 
+                answer: "pico" 
+            },
+            { 
+                question: "atto / femto = ...", 
+                options: ["micro", "milli", "nano", "deci"], 
+                answer: "milli" 
+            },
+            { 
+                question: "(Kilo × Mega) / milli = ...", 
+                options: ["peta", "Tera", "Exa", "Mega"], 
+                answer: "Tera" 
+            },
+            { 
+                question: "The least count of digital stopwatch is:", 
+                options: ["0.1s", "0.01s", "0.001s", "None"], 
+                answer: "0.01s" 
+            },
+            { 
+                question: "0.25 × 10<sup>10</sup> has how many significant figures?", 
+                options: ["02", "03", "04", "05"], 
+                answer: "02" 
+            },
+            { 
+                question: "200 ml of water in cm<sup>3</sup> is equal to:", 
+                options: ["200", "2", "400", "1600"], 
+                answer: "200" 
+            },
+            { 
+                question: "Zero between two non-zero digits will be:", 
+                options: ["significant", "non significant", "Both A & B", "None"], 
+                answer: "significant" 
+            },
+            { 
+                question: "Which number has 4 significant figures?", 
+                options: ["1000", "100.0", "220", "0.0023"], 
+                answer: "100.0" 
+            },
+            { 
+                question: "How many significant figures are in 0.02453?", 
+                options: ["5", "6", "4", "3"], 
+                answer: "4" 
+            },
+            { 
+                question: "The result of 2.34 + 8.5541 has how many significant figures?", 
+                options: ["03", "04", "05", "0.6"], 
+                answer: "04" 
+            },
+            { 
+                question: "Round 14.3456 to 3 significant figures:", 
+                options: ["14.3", "14.4", "14.34", "14.345"], 
+                answer: "14.3" 
+            },
+            { 
+                question: "How many millimeters are there in 100 cm?", 
+                options: ["100mm", "1000mm", "10,000 mm", "200mm"], 
+                answer: "1000mm" 
+            },
+            { 
+                question: "The standard with which we compare unknown things is called:", 
+                options: ["magnitude", "unit", "SI", "None"], 
+                answer: "unit" 
+            },
+            { 
+                question: "The comparison of masses of two bodies is called....", 
+                options: ["measurement", "weighing", "calculation", "none"], 
+                answer: "weighing" 
+            },
+            { 
+                question: "Least count of a screw gauge is....", 
+                options: ["0.01mm", "0.001mm", "0.01cm", "None"], 
+                answer: "0.01mm" 
+            },
+            { 
+                question: "Pitch of a screw gauge is equal to:", 
+                options: ["0.05mm", "0.5mm", "0.1mm", "0.01mm"], 
+                answer: "0.5mm" 
+            },
+            { 
+                question: "In scientific notation, the mantissa 'M' must be:", 
+                options: ["1 < M < 10", "1 > M > 10", "1 <= M < 10", "None"], 
+                answer: "1 <= M < 10" 
+            },
+            { 
+                question: "If the dropping digit is greater than five, then the retained digit is increased by:", 
+                options: ["1", "2", "3", "None"], 
+                answer: "1" 
+            },
+            { 
+                question: "When the last digit is equal to '5' and the 2nd last digit is odd, then the 2nd last digit will be....", 
+                options: ["increased by 1", "decreased by 1", "remain same", "none"], 
+                answer: "increased by 1" 
+            },
+            { 
+                question: "The number of significant figures in 8000 Kg when the least count of the scale is 10 Kg is:", 
+                options: ["4", "1", "3", "2"], 
+                answer: "3" 
+            }
         ];
 
         let currentQuestionIndex = 0;
         let studentAnswers = new Array(quizQuestions.length).fill(null);
         let timerInterval;
-        let totalTime = 10 * 60; 
+        let totalTime = 15 * 60; // Configured for 15 minutes in seconds
         let studentName = "";
         let rollNumber = "";
 
